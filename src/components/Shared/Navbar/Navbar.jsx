@@ -10,7 +10,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="fixed w-full bg-white z-10 shadow-sm">
+    <div className="w-full bg-white shadow-sm">
       <div className="py-3">
         <Container>
           <div className="flex flex-row  items-center justify-between gap-3 md:gap-0">
@@ -88,7 +88,7 @@ const Navbar = () => {
                 )}
               </div>
               {isOpen && (
-                <div className="absolute rounded-xl shadow-md w-[40vw] md:w-[10vw] bg-white overflow-hidden right-0 top-12 text-sm">
+                <div className="absolute z-50 rounded-xl shadow-md w-[40vw] md:w-[10vw] bg-white overflow-hidden right-0 top-12 text-sm">
                   <div className="flex flex-col cursor-pointer">
                     <Link
                       to="/"
