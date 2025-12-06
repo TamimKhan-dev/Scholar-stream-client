@@ -3,9 +3,9 @@ import Navbar from '../components/Shared/Navbar/Navbar'
 import Footer from '../components/Shared/Footer/Footer'
 const MainLayout = () => {
   return (
-    <div>
+    <div className='min-h-screen flex flex-col'>
       <Navbar />
-      <div className='min-h-screen flex flex-col'>
+      <div className='flex-1'>
         <Outlet />
       </div>
       <Footer />
