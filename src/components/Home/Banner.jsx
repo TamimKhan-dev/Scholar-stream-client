@@ -65,7 +65,7 @@ const Banner = () => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
-    <div className="md:min-h-[60vh] mb-10 rounded-lg bg-gray-400 mt-5 overflow-hidden">
+    <div className="md:min-h-[60vh] mb-18 rounded-lg bg-gray-400 mt-5 overflow-hidden">
       <Swiper
         cssMode={true}
         navigation={true}

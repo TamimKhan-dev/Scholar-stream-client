@@ -28,7 +28,7 @@ export const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: '/plant/:id',
+        path: '/scholarship/:id',
         element: <h1>Books details page is under construction</h1>,
       },
       {
