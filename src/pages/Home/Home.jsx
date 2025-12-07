@@ -1,4 +1,5 @@
 import Banner from "../../components/Home/Banner"
+import ContactUs from "../../components/Home/ContactUs"
 import FAQ from "../../components/Home/FAQ"
 import TopScholarships from "../../components/Home/TopScholarships"
 import Container from "../../components/Shared/Container"
@@ -9,6 +10,7 @@ const Home = () => {
       <Container >
         <Banner />
         <TopScholarships />
+        <ContactUs />
         <FAQ />
       </Container>
     </div>

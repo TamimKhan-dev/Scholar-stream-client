@@ -3,7 +3,7 @@ import React from "react";
 const FAQ = () => {
   return (
     <div className="mb-20">
-      <h2 className="text-2xl mb-3 font-bold">Frequently Asked Question</h2>
+      <h2 className="text-2xl mb-8 font-bold">Frequently Asked Question</h2>
 
       <div className="space-y-4">
         <div
