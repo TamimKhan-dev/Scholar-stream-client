@@ -4,7 +4,6 @@ import ErrorPage from '../pages/ErrorPage'
 import Login from '../pages/Login/Login'
 import PrivateRoute from './PrivateRoute'
 import MainLayout from '../layouts/MainLayout'
-
 import DashboardLayout from '../layouts/DashboardLayout'
 import AddPlant from '../pages/Dashboard/Seller/AddPlant'
 import ManageUsers from '../pages/Dashboard/Admin/ManageUsers'
@@ -13,7 +12,6 @@ import Statistics from '../pages/Dashboard/Common/Statistics'
 import MyInventory from '../pages/Dashboard/Seller/MyInventory'
 import ManageOrders from '../pages/Dashboard/Seller/ManageOrders'
 import MyOrders from '../pages/Dashboard/Customer/MyOrders'
-
 import Register from '../pages/Register/Register'
 import AllScholarships from '../pages/AllScholarships/AllScholarships'
 
