@@ -14,6 +14,7 @@ import ManageOrders from '../pages/Dashboard/Seller/ManageOrders'
 import MyOrders from '../pages/Dashboard/Customer/MyOrders'
 import Register from '../pages/Register/Register'
 import AllScholarships from '../pages/AllScholarships/AllScholarships'
+import ScholarshipDetails from '../pages/ScholarshipDetails/ScholarshipDetails'
 
 export const router = createBrowserRouter([
   {
@@ -27,7 +28,7 @@ export const router = createBrowserRouter([
       },
       {
         path: '/scholarship/:id',
-        element: <h1>Books details page is under construction</h1>,
+        element: <ScholarshipDetails />
       },
       {
         path: '/all-scholarships',
