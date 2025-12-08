@@ -77,11 +77,12 @@ const Navbar = () => {
                     </div>
                   </div>
                 ) : (
-                  <div className="p-2 rounded-3xl space-x-2 border-2 border-primary">
-                    <Link to="/signup" className="font-semibold">
+                  <div className="space-x-2 flex flex-col items-center sm:flex-row">
+                    <Link to="/login" className="font-semibold border-primary border-2 py-2 px-3 rounded-3xl transition hover:bg-primary hover:text-white">
                       Login
                     </Link>
-                    <Link to="/signup" className="font-semibold">
+                    <span className="font-semibold">Or</span>
+                    <Link to="/signup" className="font-semibold border-primary border-2 py-2 px-3 rounded-3xl transition hover:bg-primary  hover:text-white">
                       Sign Up
                     </Link>
                   </div>

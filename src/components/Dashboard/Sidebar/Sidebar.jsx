@@ -29,9 +29,13 @@ const Sidebar = () => {
       <div className='bg-gray-100 text-gray-800 flex justify-between md:hidden'>
         <div>
           <div className='block cursor-pointer p-4 font-bold'>
-            <Link to='/'>
-              <img src={logo} alt='logo' width='100' height='100' />
-            </Link>
+            <Link to='/' className='flex items-center gap-2'>
+                <img src={logo} alt='logo' width='50' height='50' />
+                <div>
+                  <p><span className='text-primary font-semibold'>SCHOLAR</span>STREAM</p>
+                  <span className='text-sm text-gray-400'>Unlock Your Potencial</span>
+                </div>
+              </Link>
           </div>
         </div>
 
@@ -54,8 +58,12 @@ const Sidebar = () => {
           <div>
             {/* Logo */}
             <div className='w-full hidden md:flex px-4 py-2 shadow-lg rounded-lg justify-center items-center bg-lime-100 mx-auto'>
-              <Link to='/'>
-                <img src={logo} alt='logo' width='100' height='100' />
+              <Link to='/' className='flex items-center gap-2'>
+                <img src={logo} alt='logo' width='50' height='50' />
+                <div>
+                  <p><span className='text-primary font-semibold'>SCHOLAR</span>STREAM</p>
+                  <span className='text-sm text-gray-400'>Unlock Your Potencial</span>
+                </div>
               </Link>
             </div>
           </div>
