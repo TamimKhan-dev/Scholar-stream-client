@@ -3,9 +3,11 @@ import { FcGoogle } from "react-icons/fc";
 import useAuth from "../../hooks/useAuth";
 import { toast } from "react-hot-toast";
 import { useForm } from "react-hook-form";
+import { LiaHourglassStartSolid } from "react-icons/lia";
+import { imageUpload } from "../../utils/imageUpload";
 
 const Register = () => {
-  const { createUser, updateUserProfile, signInWithGoogle } = useAuth();
+  const { createUser, updateUserProfile, signInWithGoogle, loading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state || "/";
@@ -16,37 +18,25 @@ const Register = () => {
   } = useForm();
 
   const handleFormSubmit = async (data) => {
-      const { email, password, image, name} = data;
+    const { email, password, image, name } = data;
 
-      console.log(image);
+    try {
+      const imageURL = await imageUpload(image[0]);
+      
+      const result = await createUser(email, password);
+      await updateUserProfile(
+        name,
+        imageURL
+      );
+      console.log(result);
 
-      try {
-        //2. User Registration
-        const result = await createUser(email, password);
-
-        //3. Save username & profile photo
-        await updateUserProfile(
-          name,
-          "https://lh3.googleusercontent.com/a/ACg8ocKUMU3XIX-JSUB80Gj_bYIWfYudpibgdwZE1xqmAGxHASgdvCZZ=s96-c"
-        );
-        console.log(result);
-
-        navigate(from, { replace: true });
-        toast.success("Signup Successful");
-      } catch (err) {
-        console.log(err);
-        toast.error(err?.message);
-      }
+      navigate(from, { replace: true });
+      toast.success("Signup Successful");
+    } catch (err) {
+      console.log(err);
+      toast.error(err?.message);
+    }
   };
-
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault();
-  //   const form = event.target;
-  //   const name = form.name.value;
-  //   const email = form.email.value;
-  //   const password = form.password.value;
-
-  // };
 
   const handleGoogleSignIn = async () => {
     try {
@@ -101,9 +91,9 @@ const Register = () => {
                 Profile Image
               </label>
               <input
-                {...register("image", { required: "Photo is required"})}
+                {...register("image", { required: "Photo is required" })}
                 type="file"
-                id="image"               
+                id="image"
                 accept="image/*"
                 className="block w-full text-sm text-gray-500
       file:mr-4 file:py-2 file:px-4
@@ -117,7 +107,7 @@ const Register = () => {
               />
               {errors.name?.type === "required" && (
                 <p className="text-red-500 text-xs mt-1">
-                  {errors.image.message}
+                  {errors.image?.message}
                 </p>
               )}
             </div>
@@ -196,9 +186,9 @@ const Register = () => {
           <div>
             <button
               type="submit"
-              className="bg-primary w-full rounded-md py-3 text-white"
+              className="bg-primary cursor-pointer w-full rounded-md py-3 text-white"
             >
-              Sign Up
+              { loading ? <LiaHourglassStartSolid className='animate-spin m-auto' /> : 'Sign Up' }
             </button>
           </div>
         </form>
