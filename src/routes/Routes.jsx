@@ -28,7 +28,7 @@ export const router = createBrowserRouter([
       },
       {
         path: '/scholarship/:id',
-        element: <ScholarshipDetails />
+        element: <PrivateRoute><ScholarshipDetails /></PrivateRoute>
       },
       {
         path: '/all-scholarships',
