@@ -1,119 +1,300 @@
-const AddPlantForm = () => {
-  return (
-    <div className='w-full min-h-[calc(100vh-40px)] flex flex-col justify-center items-center text-gray-800 rounded-xl bg-gray-50'>
-      <form>
-        <div className='grid grid-cols-1 lg:grid-cols-2 gap-10'>
-          <div className='space-y-6'>
-            {/* Name */}
-            <div className='space-y-1 text-sm'>
-              <label htmlFor='name' className='block text-gray-600'>
-                Name
-              </label>
-              <input
-                className='w-full px-4 py-3 text-gray-800 border border-lime-300 focus:outline-lime-500 rounded-md bg-white'
-                name='name'
-                id='name'
-                type='text'
-                placeholder='Plant Name'
-                required
-              />
-            </div>
-            {/* Category */}
-            <div className='space-y-1 text-sm'>
-              <label htmlFor='category' className='block text-gray-600 '>
-                Category
-              </label>
-              <select
-                required
-                className='w-full px-4 py-3 border-lime-300 focus:outline-lime-500 rounded-md bg-white'
-                name='category'
-              >
-                <option value='Indoor'>Indoor</option>
-                <option value='Outdoor'>Outdoor</option>
-                <option value='Succulent'>Succulent</option>
-                <option value='Flowering'>Flowering</option>
-              </select>
-            </div>
-            {/* Description */}
-            <div className='space-y-1 text-sm'>
-              <label htmlFor='description' className='block text-gray-600'>
-                Description
-              </label>
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import useAuth from '../../hooks/useAuth';
 
-              <textarea
-                id='description'
-                placeholder='Write plant description here...'
-                className='block rounded-md focus:lime-300 w-full h-32 px-4 py-3 text-gray-800  border border-lime-300 bg-white focus:outline-lime-500 '
-                name='description'
-              ></textarea>
+const AddPlantForm = () => {
+  const { user } = useAuth();
+  const { register, handleSubmit, formState: { errors } } = useForm();
+
+  const onSubmit = async (data) => {
+    console.log(data);
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50 p-4 sm:p-6 lg:p-8">
+      <div className="max-w-6xl mx-auto">
+        {/* Header */}
+        <div className="bg-primary rounded-t-lg px-6 py-8 sm:px-8">
+          <h1 className="text-2xl sm:text-3xl font-bold text-white text-center">
+            Add New Scholarship
+          </h1>
+        </div>
+
+        {/* Form */}
+        <form onSubmit={handleSubmit(onSubmit)} className="bg-white rounded-b-lg shadow-lg p-6 sm:p-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Left Column */}
+            <div className="space-y-6">
+              {/* Scholarship Name */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-900 mb-2">
+                  Scholarship Name
+                </label>
+                <input
+                  type="text"
+                  placeholder="Enter scholarship name"
+                  className={`w-full px-4 py-3 border ${errors.scholarshipName ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`}
+                  {...register('scholarshipName', { required: 'Scholarship name is required' })}
+                />
+                {errors.scholarshipName && (
+                  <p className="mt-1 text-sm text-red-500">{errors.scholarshipName.message}</p>
+                )}
+              </div>
+
+              {/* University Name */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-900 mb-2">
+                  University Name
+                </label>
+                <input
+                  type="text"
+                  placeholder="Enter university name"
+                  className={`w-full px-4 py-3 border ${errors.universityName ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`}
+                  {...register('universityName', { required: 'University name is required' })}
+                />
+                {errors.universityName && (
+                  <p className="mt-1 text-sm text-red-500">{errors.universityName.message}</p>
+                )}
+              </div>
+
+              {/* University Image */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-900 mb-2">
+                  University Image
+                </label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                  {...register('universityImage')}
+                />
+              </div>
+
+              {/* University Country */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-900 mb-2">
+                  University Country
+                </label>
+                <input
+                  type="text"
+                  placeholder="Enter country"
+                  className={`w-full px-4 py-3 border ${errors.universityCountry ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`}
+                  {...register('universityCountry', { required: 'Country is required' })}
+                />
+                {errors.universityCountry && (
+                  <p className="mt-1 text-sm text-red-500">{errors.universityCountry.message}</p>
+                )}
+              </div>
+
+              {/* University City */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-900 mb-2">
+                  University City
+                </label>
+                <input
+                  type="text"
+                  placeholder="Enter city"
+                  className={`w-full px-4 py-3 border ${errors.universityCity ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`}
+                  {...register('universityCity', { required: 'City is required' })}
+                />
+                {errors.universityCity && (
+                  <p className="mt-1 text-sm text-red-500">{errors.universityCity.message}</p>
+                )}
+              </div>
+
+              {/* University World Rank */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-900 mb-2">
+                  University World Rank
+                </label>
+                <input
+                  type="text"
+                  placeholder="Enter world rank"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  {...register('universityRank')}
+                />
+              </div>
+
+              {/* Subject Category */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-900 mb-2">
+                  Subject Category
+                </label>
+                <select
+                  className={`w-full px-4 py-3 border ${errors.subjectCategory ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary appearance-none bg-white`}
+                  {...register('subjectCategory', { required: 'Subject category is required' })}
+                >
+                  <option value="">Select Subject</option>
+                  <option value="engineering">Engineering</option>
+                  <option value="medicine">Medicine</option>
+                  <option value="business">Business</option>
+                  <option value="arts">Arts</option>
+                  <option value="science">Science</option>
+                </select>
+                {errors.subjectCategory && (
+                  <p className="mt-1 text-sm text-red-500">{errors.subjectCategory.message}</p>
+                )}
+              </div>
+
+              {/* Scholarship Category */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-900 mb-2">
+                  Scholarship Category
+                </label>
+                <select
+                  className={`w-full px-4 py-3 border ${errors.scholarshipCategory ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary appearance-none bg-white`}
+                  {...register('scholarshipCategory', { required: 'Scholarship category is required' })}
+                >
+                  <option value="">Select Category</option>
+                  <option value="full">Full Scholarship</option>
+                  <option value="partial">Partial Scholarship</option>
+                  <option value="merit">Merit-based</option>
+                  <option value="need">Need-based</option>
+                </select>
+                {errors.scholarshipCategory && (
+                  <p className="mt-1 text-sm text-red-500">{errors.scholarshipCategory.message}</p>
+                )}
+              </div>
+            </div>
+
+            {/* Right Column */}
+            <div className="space-y-6">
+              {/* Degree */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-900 mb-2">
+                  Degree
+                </label>
+                <select
+                  className={`w-full px-4 py-3 border ${errors.degree ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary appearance-none bg-white`}
+                  {...register('degree', { required: 'Degree is required' })}
+                >
+                  <option value="">Select Degree</option>
+                  <option value="bachelor">Bachelor's</option>
+                  <option value="master">Master's</option>
+                  <option value="phd">PhD</option>
+                  <option value="diploma">Diploma</option>
+                </select>
+                {errors.degree && (
+                  <p className="mt-1 text-sm text-red-500">{errors.degree.message}</p>
+                )}
+              </div>
+
+              {/* Tuition Fees */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-900 mb-2">
+                  Tuition Fees
+                </label>
+                <input
+                  type="text"
+                  placeholder="Enter tuition fees"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  {...register('tuitionFees')}
+                />
+              </div>
+
+              {/* Application Fees */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-900 mb-2">
+                  Application Fees
+                </label>
+                <input
+                  type="text"
+                  placeholder="Enter application fees"
+                  className={`w-full px-4 py-3 border ${errors.applicationFees ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`}
+                  {...register('applicationFees', { required: 'Application fees is required' })}
+                />
+                {errors.applicationFees && (
+                  <p className="mt-1 text-sm text-red-500">{errors.applicationFees.message}</p>
+                )}
+              </div>
+
+              {/* Service Charge */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-900 mb-2">
+                  Service Charge
+                </label>
+                <input
+                  type="text"
+                  placeholder="Enter service charge"
+                  className={`w-full px-4 py-3 border ${errors.serviceCharge ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`}
+                  {...register('serviceCharge', { required: 'Service charge is required' })}
+                />
+                {errors.serviceCharge && (
+                  <p className="mt-1 text-sm text-red-500">{errors.serviceCharge.message}</p>
+                )}
+              </div>
+
+              {/* Application Deadline */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-900 mb-2">
+                  Application Deadline
+                </label>
+                <input
+                  type="date"
+                  placeholder="MM/DD/YYYY"
+                  className={`w-full px-4 py-3 border ${errors.applicationDeadline ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`}
+                  {...register('applicationDeadline', { required: 'Application deadline is required' })}
+                />
+                {errors.applicationDeadline && (
+                  <p className="mt-1 text-sm text-red-500">{errors.applicationDeadline.message}</p>
+                )}
+              </div>
+
+              {/* Scholarship Post Date */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-900 mb-2">
+                  Scholarship Post Date
+                </label>
+                <input
+                  type="date"
+                  placeholder="MM/DD/YYYY"
+                  className={`w-full px-4 py-3 border ${errors.postDate ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`}
+                  {...register('postDate', { required: 'Post date is required' })}
+                />
+                {errors.postDate && (
+                  <p className="mt-1 text-sm text-red-500">{errors.postDate.message}</p>
+                )}
+              </div>
+
+              {/* User Email */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-900 mb-2">
+                  User Email
+                </label>
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                  readOnly
+                  defaultValue={user?.email}
+                  className={`w-full px-4 py-3 border ${errors.userEmail ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`}
+                  {...register('userEmail', {
+                    required: 'Email is required',
+                    pattern: {
+                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                      message: 'Invalid email address'
+                    }
+                  })}
+                />
+                {errors.userEmail && (
+                  <p className="mt-1 text-sm text-red-500">{errors.userEmail.message}</p>
+                )}
+              </div>
             </div>
           </div>
-          <div className='space-y-6 flex flex-col'>
-            {/* Price & Quantity */}
-            <div className='flex justify-between gap-2'>
-              {/* Price */}
-              <div className='space-y-1 text-sm'>
-                <label htmlFor='price' className='block text-gray-600 '>
-                  Price
-                </label>
-                <input
-                  className='w-full px-4 py-3 text-gray-800 border border-lime-300 focus:outline-lime-500 rounded-md bg-white'
-                  name='price'
-                  id='price'
-                  type='number'
-                  placeholder='Price per unit'
-                  required
-                />
-              </div>
 
-              {/* Quantity */}
-              <div className='space-y-1 text-sm'>
-                <label htmlFor='quantity' className='block text-gray-600'>
-                  Quantity
-                </label>
-                <input
-                  className='w-full px-4 py-3 text-gray-800 border border-lime-300 focus:outline-lime-500 rounded-md bg-white'
-                  name='quantity'
-                  id='quantity'
-                  type='number'
-                  placeholder='Available quantity'
-                  required
-                />
-              </div>
-            </div>
-            {/* Image */}
-            <div className=' p-4  w-full  m-auto rounded-lg grow'>
-              <div className='file_upload px-5 py-3 relative border-4 border-dotted border-gray-300 rounded-lg'>
-                <div className='flex flex-col w-max mx-auto text-center'>
-                  <label>
-                    <input
-                      className='text-sm cursor-pointer w-36 hidden'
-                      type='file'
-                      name='image'
-                      id='image'
-                      accept='image/*'
-                      hidden
-                    />
-                    <div className='bg-lime-500 text-white border border-gray-300 rounded font-semibold cursor-pointer p-1 px-3 hover:bg-lime-500'>
-                      Upload
-                    </div>
-                  </label>
-                </div>
-              </div>
-            </div>
-
-            {/* Submit Button */}
+          {/* Submit Button */}
+          <div className="mt-8">
             <button
-              type='submit'
-              className='w-full cursor-pointer p-3 mt-5 text-center font-medium text-white transition duration-200 rounded shadow-md bg-lime-500 '
+              type="submit"
+              className="w-full bg-primary cursor-pointer hover:bg-blue-900 text-white font-semibold py-4 px-6 rounded-lg transition duration-200 shadow-md hover:shadow-lg"
             >
-              Save & Continue
+              Submit Scholarship
             </button>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
-  )
-}
+  );;
+};
 
-export default AddPlantForm
+export default AddPlantForm;
