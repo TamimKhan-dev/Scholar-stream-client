@@ -1,14 +1,47 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
-import useAuth from '../../hooks/useAuth';
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import useAuth from "../../hooks/useAuth";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import { imageUpload } from "../../utils/imageUpload";
+import toast from "react-hot-toast";
 
 const AddPlantForm = () => {
+  const [isSending, setIsSending] = useState(false);
   const { user } = useAuth();
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const axiosSecure = useAxiosSecure();
 
   const onSubmit = async (data) => {
-    console.log(data);
-  }
+    try {
+      const file = data.universityImage?.[0];
+
+      let imageURL = "";
+
+      if (file) {
+        const uploadImg = await imageUpload(file);
+        imageURL = uploadImg;
+      }
+
+      const scholarshipInfo = {
+        ...data,
+        universityImage: imageURL,
+      };
+
+      setIsSending(true);
+      await axiosSecure.post("/scholarships", scholarshipInfo);
+
+      toast.success("Scholarship added successfully");
+    } catch (err) {
+      console.log(err.message);
+      toast.error("Something went wrong");
+    } finally {
+      setIsSending(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 p-4 sm:p-6 lg:p-8">
@@ -21,7 +54,10 @@ const AddPlantForm = () => {
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit(onSubmit)} className="bg-white rounded-b-lg shadow-lg p-6 sm:p-8">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="bg-white rounded-b-lg shadow-lg p-6 sm:p-8"
+        >
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Left Column */}
             <div className="space-y-6">
@@ -33,11 +69,19 @@ const AddPlantForm = () => {
                 <input
                   type="text"
                   placeholder="Enter scholarship name"
-                  className={`w-full px-4 py-3 border ${errors.scholarshipName ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`}
-                  {...register('scholarshipName', { required: 'Scholarship name is required' })}
+                  className={`w-full px-4 py-3 border ${
+                    errors.scholarshipName
+                      ? "border-red-500"
+                      : "border-gray-300"
+                  } rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`}
+                  {...register("scholarshipName", {
+                    required: "Scholarship name is required",
+                  })}
                 />
                 {errors.scholarshipName && (
-                  <p className="mt-1 text-sm text-red-500">{errors.scholarshipName.message}</p>
+                  <p className="mt-1 text-sm text-red-500">
+                    {errors.scholarshipName.message}
+                  </p>
                 )}
               </div>
 
@@ -49,11 +93,17 @@ const AddPlantForm = () => {
                 <input
                   type="text"
                   placeholder="Enter university name"
-                  className={`w-full px-4 py-3 border ${errors.universityName ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`}
-                  {...register('universityName', { required: 'University name is required' })}
+                  className={`w-full px-4 py-3 border ${
+                    errors.universityName ? "border-red-500" : "border-gray-300"
+                  } rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`}
+                  {...register("universityName", {
+                    required: "University name is required",
+                  })}
                 />
                 {errors.universityName && (
-                  <p className="mt-1 text-sm text-red-500">{errors.universityName.message}</p>
+                  <p className="mt-1 text-sm text-red-500">
+                    {errors.universityName.message}
+                  </p>
                 )}
               </div>
 
@@ -66,7 +116,7 @@ const AddPlantForm = () => {
                   type="file"
                   accept="image/*"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-                  {...register('universityImage')}
+                  {...register("universityImage")}
                 />
               </div>
 
@@ -78,11 +128,19 @@ const AddPlantForm = () => {
                 <input
                   type="text"
                   placeholder="Enter country"
-                  className={`w-full px-4 py-3 border ${errors.universityCountry ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`}
-                  {...register('universityCountry', { required: 'Country is required' })}
+                  className={`w-full px-4 py-3 border ${
+                    errors.universityCountry
+                      ? "border-red-500"
+                      : "border-gray-300"
+                  } rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`}
+                  {...register("universityCountry", {
+                    required: "Country is required",
+                  })}
                 />
                 {errors.universityCountry && (
-                  <p className="mt-1 text-sm text-red-500">{errors.universityCountry.message}</p>
+                  <p className="mt-1 text-sm text-red-500">
+                    {errors.universityCountry.message}
+                  </p>
                 )}
               </div>
 
@@ -94,11 +152,17 @@ const AddPlantForm = () => {
                 <input
                   type="text"
                   placeholder="Enter city"
-                  className={`w-full px-4 py-3 border ${errors.universityCity ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`}
-                  {...register('universityCity', { required: 'City is required' })}
+                  className={`w-full px-4 py-3 border ${
+                    errors.universityCity ? "border-red-500" : "border-gray-300"
+                  } rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`}
+                  {...register("universityCity", {
+                    required: "City is required",
+                  })}
                 />
                 {errors.universityCity && (
-                  <p className="mt-1 text-sm text-red-500">{errors.universityCity.message}</p>
+                  <p className="mt-1 text-sm text-red-500">
+                    {errors.universityCity.message}
+                  </p>
                 )}
               </div>
 
@@ -111,7 +175,7 @@ const AddPlantForm = () => {
                   type="text"
                   placeholder="Enter world rank"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-                  {...register('universityRank')}
+                  {...register("universityRank")}
                 />
               </div>
 
@@ -121,8 +185,14 @@ const AddPlantForm = () => {
                   Subject Category
                 </label>
                 <select
-                  className={`w-full px-4 py-3 border ${errors.subjectCategory ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary appearance-none bg-white`}
-                  {...register('subjectCategory', { required: 'Subject category is required' })}
+                  className={`w-full px-4 py-3 border ${
+                    errors.subjectCategory
+                      ? "border-red-500"
+                      : "border-gray-300"
+                  } rounded-lg focus:outline-none focus:ring-2 focus:ring-primary appearance-none bg-white`}
+                  {...register("subjectCategory", {
+                    required: "Subject category is required",
+                  })}
                 >
                   <option value="">Select Subject</option>
                   <option value="engineering">Engineering</option>
@@ -132,7 +202,35 @@ const AddPlantForm = () => {
                   <option value="science">Science</option>
                 </select>
                 {errors.subjectCategory && (
-                  <p className="mt-1 text-sm text-red-500">{errors.subjectCategory.message}</p>
+                  <p className="mt-1 text-sm text-red-500">
+                    {errors.subjectCategory.message}
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {/* Right Column */}
+            <div className="space-y-6.5">
+              {/* Degree */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-900 mb-2">
+                  Degree
+                </label>
+                <select
+                  className={`w-full px-4 py-3 border ${
+                    errors.degree ? "border-red-500" : "border-gray-300"
+                  } rounded-lg focus:outline-none focus:ring-2 focus:ring-primary appearance-none bg-white`}
+                  {...register("degree", { required: "Degree is required" })}
+                >
+                  <option value="">Select Degree</option>
+                  <option value="bachelor">Bachelor</option>
+                  <option value="master">Master's</option>
+                  <option value="diploma">Diploma</option>
+                </select>
+                {errors.degree && (
+                  <p className="mt-1 text-sm text-red-500">
+                    {errors.degree.message}
+                  </p>
                 )}
               </div>
 
@@ -142,40 +240,24 @@ const AddPlantForm = () => {
                   Scholarship Category
                 </label>
                 <select
-                  className={`w-full px-4 py-3 border ${errors.scholarshipCategory ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary appearance-none bg-white`}
-                  {...register('scholarshipCategory', { required: 'Scholarship category is required' })}
+                  className={`w-full px-4 py-3 border ${
+                    errors.scholarshipCategory
+                      ? "border-red-500"
+                      : "border-gray-300"
+                  } rounded-lg focus:outline-none focus:ring-2 focus:ring-primary appearance-none bg-white`}
+                  {...register("scholarshipCategory", {
+                    required: "Scholarship category is required",
+                  })}
                 >
                   <option value="">Select Category</option>
-                  <option value="full">Full Scholarship</option>
-                  <option value="partial">Partial Scholarship</option>
-                  <option value="merit">Merit-based</option>
-                  <option value="need">Need-based</option>
+                  <option value="Full-fund">Full-fund</option>
+                  <option value="Partial">Partial</option>
+                  <option value="Self-fund">Self-fund</option>
                 </select>
                 {errors.scholarshipCategory && (
-                  <p className="mt-1 text-sm text-red-500">{errors.scholarshipCategory.message}</p>
-                )}
-              </div>
-            </div>
-
-            {/* Right Column */}
-            <div className="space-y-6">
-              {/* Degree */}
-              <div>
-                <label className="block text-sm font-semibold text-gray-900 mb-2">
-                  Degree
-                </label>
-                <select
-                  className={`w-full px-4 py-3 border ${errors.degree ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary appearance-none bg-white`}
-                  {...register('degree', { required: 'Degree is required' })}
-                >
-                  <option value="">Select Degree</option>
-                  <option value="bachelor">Bachelor's</option>
-                  <option value="master">Master's</option>
-                  <option value="phd">PhD</option>
-                  <option value="diploma">Diploma</option>
-                </select>
-                {errors.degree && (
-                  <p className="mt-1 text-sm text-red-500">{errors.degree.message}</p>
+                  <p className="mt-1 text-sm text-red-500">
+                    {errors.scholarshipCategory.message}
+                  </p>
                 )}
               </div>
 
@@ -188,7 +270,7 @@ const AddPlantForm = () => {
                   type="text"
                   placeholder="Enter tuition fees"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-                  {...register('tuitionFees')}
+                  {...register("tuitionFees")}
                 />
               </div>
 
@@ -200,11 +282,19 @@ const AddPlantForm = () => {
                 <input
                   type="text"
                   placeholder="Enter application fees"
-                  className={`w-full px-4 py-3 border ${errors.applicationFees ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`}
-                  {...register('applicationFees', { required: 'Application fees is required' })}
+                  className={`w-full px-4 py-3 border ${
+                    errors.applicationFees
+                      ? "border-red-500"
+                      : "border-gray-300"
+                  } rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`}
+                  {...register("applicationFees", {
+                    required: "Application fees is required",
+                  })}
                 />
                 {errors.applicationFees && (
-                  <p className="mt-1 text-sm text-red-500">{errors.applicationFees.message}</p>
+                  <p className="mt-1 text-sm text-red-500">
+                    {errors.applicationFees.message}
+                  </p>
                 )}
               </div>
 
@@ -216,11 +306,17 @@ const AddPlantForm = () => {
                 <input
                   type="text"
                   placeholder="Enter service charge"
-                  className={`w-full px-4 py-3 border ${errors.serviceCharge ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`}
-                  {...register('serviceCharge', { required: 'Service charge is required' })}
+                  className={`w-full px-4 py-3 border ${
+                    errors.serviceCharge ? "border-red-500" : "border-gray-300"
+                  } rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`}
+                  {...register("serviceCharge", {
+                    required: "Service charge is required",
+                  })}
                 />
                 {errors.serviceCharge && (
-                  <p className="mt-1 text-sm text-red-500">{errors.serviceCharge.message}</p>
+                  <p className="mt-1 text-sm text-red-500">
+                    {errors.serviceCharge.message}
+                  </p>
                 )}
               </div>
 
@@ -232,27 +328,19 @@ const AddPlantForm = () => {
                 <input
                   type="date"
                   placeholder="MM/DD/YYYY"
-                  className={`w-full px-4 py-3 border ${errors.applicationDeadline ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`}
-                  {...register('applicationDeadline', { required: 'Application deadline is required' })}
+                  className={`w-full px-4 py-3 border ${
+                    errors.applicationDeadline
+                      ? "border-red-500"
+                      : "border-gray-300"
+                  } rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`}
+                  {...register("applicationDeadline", {
+                    required: "Application deadline is required",
+                  })}
                 />
                 {errors.applicationDeadline && (
-                  <p className="mt-1 text-sm text-red-500">{errors.applicationDeadline.message}</p>
-                )}
-              </div>
-
-              {/* Scholarship Post Date */}
-              <div>
-                <label className="block text-sm font-semibold text-gray-900 mb-2">
-                  Scholarship Post Date
-                </label>
-                <input
-                  type="date"
-                  placeholder="MM/DD/YYYY"
-                  className={`w-full px-4 py-3 border ${errors.postDate ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`}
-                  {...register('postDate', { required: 'Post date is required' })}
-                />
-                {errors.postDate && (
-                  <p className="mt-1 text-sm text-red-500">{errors.postDate.message}</p>
+                  <p className="mt-1 text-sm text-red-500">
+                    {errors.applicationDeadline.message}
+                  </p>
                 )}
               </div>
 
@@ -266,17 +354,21 @@ const AddPlantForm = () => {
                   placeholder="Enter your email"
                   readOnly
                   defaultValue={user?.email}
-                  className={`w-full px-4 py-3 border ${errors.userEmail ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`}
-                  {...register('userEmail', {
-                    required: 'Email is required',
+                  className={`w-full px-4 py-3 border ${
+                    errors.userEmail ? "border-red-500" : "border-gray-300"
+                  } rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`}
+                  {...register("userEmail", {
+                    required: "Email is required",
                     pattern: {
                       value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                      message: 'Invalid email address'
-                    }
+                      message: "Invalid email address",
+                    },
                   })}
                 />
                 {errors.userEmail && (
-                  <p className="mt-1 text-sm text-red-500">{errors.userEmail.message}</p>
+                  <p className="mt-1 text-sm text-red-500">
+                    {errors.userEmail.message}
+                  </p>
                 )}
               </div>
             </div>
@@ -288,13 +380,13 @@ const AddPlantForm = () => {
               type="submit"
               className="w-full bg-primary cursor-pointer hover:bg-blue-900 text-white font-semibold py-4 px-6 rounded-lg transition duration-200 shadow-md hover:shadow-lg"
             >
-              Submit Scholarship
+              {isSending ? "Sending..." : "Submit Scholarship"}
             </button>
           </div>
         </form>
       </div>
     </div>
-  );;
+  );
 };
 
 export default AddPlantForm;

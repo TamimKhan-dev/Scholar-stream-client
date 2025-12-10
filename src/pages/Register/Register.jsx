@@ -38,7 +38,7 @@ const Register = () => {
         imageURL
       }
 
-      axiosSecure.post(import.meta.env.VITE_SITE_DOMAIN, userInfo)
+      axiosSecure.post('/users', userInfo)
 
       navigate(from, { replace: true });
       toast.success("Signup Successful");
