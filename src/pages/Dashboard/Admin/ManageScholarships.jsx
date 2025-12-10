@@ -1,6 +1,17 @@
-import CustomerOrderDataRow from '../../../components/Dashboard/TableRows/CustomerOrderDataRow'
+import { useQuery } from '@tanstack/react-query'
+import CustomerOrderDataRow from '../../../components/Dashboard/TableRows/ManageScholarshipsDataRow'
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
 
-const MyOrders = () => {
+const ManageScholarships = () => {
+  const axiosSecure = useAxiosSecure();
+  const { data: scholarships = [] } = useQuery({
+    queryKey: ['scholarships'],
+    queryFn: async () => {
+      const res = await axiosSecure.get('/scholarships');
+      return res.data;
+    }
+  });
+
   return (
     <>
       <div className='container mx-auto px-4 sm:px-8'>
@@ -14,37 +25,43 @@ const MyOrders = () => {
                       scope='col'
                       className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                     >
-                      Image
+                      No
                     </th>
                     <th
                       scope='col'
                       className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                     >
-                      Name
+                      Scholarship Name
                     </th>
                     <th
                       scope='col'
                       className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                     >
-                      Category
+                      University Name
                     </th>
                     <th
                       scope='col'
                       className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                     >
-                      Price
+                      Degree
                     </th>
                     <th
                       scope='col'
                       className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                     >
-                      Quantity
+                      Scholarship Category
                     </th>
                     <th
                       scope='col'
                       className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                     >
-                      Status
+                      Application Deadline
+                    </th>
+                    <th
+                      scope='col'
+                      className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
+                    >
+                      University Country
                     </th>
 
                     <th
@@ -56,7 +73,7 @@ const MyOrders = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <CustomerOrderDataRow />
+                  { scholarships.map((scholarship, index) => <CustomerOrderDataRow key={scholarship._id} scholarship={scholarship} index={index}/>)}
                 </tbody>
               </table>
             </div>
@@ -67,4 +84,4 @@ const MyOrders = () => {
   )
 }
 
-export default MyOrders
+export default ManageScholarships

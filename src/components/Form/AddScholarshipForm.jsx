@@ -3,9 +3,10 @@ import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { imageUpload } from "../../utils/imageUpload";
+import { format } from 'date-fns';
 import toast from "react-hot-toast";
 
-const AddPlantForm = () => {
+const AddScholarshipForm = () => {
   const [isSending, setIsSending] = useState(false);
   const { user } = useAuth();
   const {
@@ -25,10 +26,13 @@ const AddPlantForm = () => {
         const uploadImg = await imageUpload(file);
         imageURL = uploadImg;
       }
+      
+      const deadline = new Date(data.applicationDeadline);
 
       const scholarshipInfo = {
         ...data,
         universityImage: imageURL,
+        applicationDeadline: format(deadline, 'dd/MM/yyyy')
       };
 
       setIsSending(true);
@@ -223,9 +227,9 @@ const AddPlantForm = () => {
                   {...register("degree", { required: "Degree is required" })}
                 >
                   <option value="">Select Degree</option>
-                  <option value="bachelor">Bachelor</option>
-                  <option value="master">Master's</option>
-                  <option value="diploma">Diploma</option>
+                  <option value="Bachelor">Bachelor</option>
+                  <option value="Master's">Master's</option>
+                  <option value="Diploma">Diploma</option>
                 </select>
                 {errors.degree && (
                   <p className="mt-1 text-sm text-red-500">
@@ -389,4 +393,4 @@ const AddPlantForm = () => {
   );
 };
 
-export default AddPlantForm;
+export default AddScholarshipForm;

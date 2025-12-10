@@ -5,16 +5,16 @@ import Login from '../pages/Login/Login'
 import PrivateRoute from './PrivateRoute'
 import MainLayout from '../layouts/MainLayout'
 import DashboardLayout from '../layouts/DashboardLayout'
-import AddPlant from '../pages/Dashboard/Seller/AddPlant'
 import ManageUsers from '../pages/Dashboard/Admin/ManageUsers'
 import Profile from '../pages/Dashboard/Common/Profile'
-import Statistics from '../pages/Dashboard/Common/Statistics'
+import Statistics from '../pages/Dashboard/Admin/Statistics'
 import MyInventory from '../pages/Dashboard/Seller/MyInventory'
 import ManageOrders from '../pages/Dashboard/Seller/ManageOrders'
-import MyOrders from '../pages/Dashboard/Customer/MyOrders'
+import MyOrders from '../pages/Dashboard/Admin/ManageScholarships'
 import Register from '../pages/Register/Register'
 import AllScholarships from '../pages/AllScholarships/AllScholarships'
 import ScholarshipDetails from '../pages/ScholarshipDetails/ScholarshipDetails'
+import AddScholarship from '../pages/Dashboard/Admin/AddScholarship'
 
 export const router = createBrowserRouter([
   {
@@ -55,10 +55,10 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'add-plant',
+        path: 'add-scholarship',
         element: (
           <PrivateRoute>
-            <AddPlant />
+            <AddScholarship />
           </PrivateRoute>
         ),
       },
@@ -87,7 +87,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'my-orders',
+        path: 'manage-scholarships',
         element: (
           <PrivateRoute>
             <MyOrders />
