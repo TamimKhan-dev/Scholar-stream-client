@@ -5,11 +5,14 @@ import { toast } from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import { LiaHourglassStartSolid } from "react-icons/lia";
 import { imageUpload } from "../../utils/imageUpload";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const Register = () => {
   const { createUser, updateUserProfile, signInWithGoogle, loading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const axiosSecure = useAxiosSecure();
+  
   const from = location.state || "/";
   const {
     register,
@@ -23,12 +26,19 @@ const Register = () => {
     try {
       const imageURL = await imageUpload(image[0]);
       
-      const result = await createUser(email, password);
+      await createUser(email, password);
       await updateUserProfile(
         name,
         imageURL
       );
-      console.log(result);
+
+      const userInfo = {
+        name, 
+        email,
+        imageURL
+      }
+
+      axiosSecure.post(import.meta.env.VITE_SITE_DOMAIN, userInfo)
 
       navigate(from, { replace: true });
       toast.success("Signup Successful");
@@ -55,7 +65,7 @@ const Register = () => {
       <div className="flex flex-col max-w-md p-6 rounded-md sm:p-10 bg-gray-100 text-gray-900">
         <div className="mb-8 text-center">
           <h1 className="my-3 text-4xl font-bold">Sign Up</h1>
-          <p className="text-sm text-gray-400">Welcome to PlantNet</p>
+          <p className="text-sm text-gray-400">Welcome to ScholarStream</p>
         </div>
         <form
           onSubmit={handleSubmit(handleFormSubmit)}

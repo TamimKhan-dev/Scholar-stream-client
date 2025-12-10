@@ -1,5 +1,6 @@
 import useAuth from '../../../hooks/useAuth'
-import coverImg from '../../../assets/images/logo.png'
+import coverImg from '../../../assets/images/field_image.jpg'
+import { GoMail } from "react-icons/go";
 
 const Profile = () => {
   const { user } = useAuth()
@@ -12,7 +13,7 @@ const Profile = () => {
           src={coverImg}
           className='w-full mb-4 rounded-t-lg h-56'
         />
-        <div className='flex flex-col items-center justify-center p-4 -mt-16'>
+        <div className='p-4 flex flex-col sm:flex-row items-center gap-4 -mt-6'>
           <a href='#' className='relative block'>
             <img
               alt='profile'
@@ -21,35 +22,16 @@ const Profile = () => {
             />
           </a>
 
-          <p className='p-2 px-4 text-xs text-white bg-lime-500 rounded-full'>
-            Customer
-          </p>
-          <p className='mt-2 text-xl font-medium text-gray-800 '>
+          <div>
+            <p className='mt-2 text-sm font-medium text-gray-500 '>
             User Id: {user?.uid}
           </p>
-          <div className='w-full p-2 mt-4 rounded-lg'>
-            <div className='flex flex-wrap items-center justify-between text-sm text-gray-600 '>
-              <p className='flex flex-col'>
-                Name
-                <span className='font-bold text-gray-600 '>
-                  {user?.displayName}
-                </span>
-              </p>
-              <p className='flex flex-col'>
-                Email
-                <span className='font-bold text-gray-600 '>{user?.email}</span>
-              </p>
-
-              <div>
-                <button className='bg-lime-500  px-10 py-1 rounded-lg text-white cursor-pointer hover:bg-lime-800 block mb-1'>
-                  Update Profile
-                </button>
-                <button className='bg-lime-500 px-7 py-1 rounded-lg text-white cursor-pointer hover:bg-lime-800'>
-                  Change Password
-                </button>
-              </div>
-            </div>
+          <p className='text-xl md:text-3xl font-bold'>{user?.displayName}</p>
+          <p className='flex gap-3 items-center font-semibold'><GoMail /> {user?.email}</p>
           </div>
+           <p className='p-2 px-4 w-fit self-start mt-4 text-xs text-white bg-primary rounded-full'>
+            Student
+          </p>
         </div>
       </div>
     </div>
