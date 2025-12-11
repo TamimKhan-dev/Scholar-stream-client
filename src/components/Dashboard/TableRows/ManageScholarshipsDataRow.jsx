@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import EditScholarship from "../../Modal/EditScholarship";
 
-const ManageScholarshipsDataRow = ({ scholarship, index }) => {
+const ManageScholarshipsDataRow = ({ scholarship, index, refetch }) => {
   const myModal = useRef();
 
   return (
@@ -38,7 +38,7 @@ const ManageScholarshipsDataRow = ({ scholarship, index }) => {
           <button className="py-1 px-2 rounded-3xl cursor-pointer bg-red-400 text-white">
             Delete
           </button>
-          <EditScholarship myModal={myModal} scholarship={scholarship} />
+          <EditScholarship myModal={myModal} scholarship={scholarship} refetch={refetch}/>
         </td>
       </tr>
 

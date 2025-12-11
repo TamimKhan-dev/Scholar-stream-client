@@ -4,7 +4,7 @@ import useAxiosSecure from '../../../hooks/useAxiosSecure';
 
 const ManageScholarships = () => {
   const axiosSecure = useAxiosSecure();
-  const { data: scholarships = [] } = useQuery({
+  const { data: scholarships = [], refetch } = useQuery({
     queryKey: ['scholarships'],
     queryFn: async () => {
       const res = await axiosSecure.get('/scholarships');
@@ -73,7 +73,7 @@ const ManageScholarships = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  { scholarships.map((scholarship, index) => <CustomerOrderDataRow key={scholarship._id} scholarship={scholarship} index={index}/>)}
+                  { scholarships.map((scholarship, index) => <CustomerOrderDataRow key={scholarship._id} scholarship={scholarship} index={index} refetch={refetch}/>)}
                 </tbody>
               </table>
             </div>
