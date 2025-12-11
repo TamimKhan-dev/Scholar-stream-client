@@ -1,8 +1,28 @@
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
-import { useState } from 'react'
+import { useForm } from 'react-hook-form';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
+import { toast } from 'react-hot-toast';
 
-const UpdateUserRoleModal = ({ isOpen, closeModal, role }) => {
-  const [updatedRole, setUpdatedRole] = useState(role)
+const UpdateUserRoleModal = ({ isOpen, closeModal, user, refetch }) => {
+  const {register, handleSubmit } = useForm({
+    defaultValues: {
+      userRole: 'student'
+    }
+  });
+  const axiosSecure = useAxiosSecure();
+
+  const onSubmit = async (data) => {
+    const updatedRole = { role: data.userRole }
+    try{
+      await axiosSecure.patch(`/users/${user._id}`, updatedRole)
+      toast.success(`${user.name}'s role changed to ${data.userRole}`);
+      closeModal();
+      refetch();
+    }
+    catch(err) {
+      console.log(err.message);
+    }
+  }
 
   return (
     <>
@@ -24,23 +44,19 @@ const UpdateUserRoleModal = ({ isOpen, closeModal, role }) => {
               >
                 Update User Role
               </DialogTitle>
-              <form>
+              <form onSubmit={handleSubmit(onSubmit)}>
                 <div>
                   <select
-                    value={updatedRole}
-                    onChange={e => setUpdatedRole(e.target.value)}
                     className='w-full my-3 border border-gray-200 rounded-xl px-2 py-3'
-                    name='role'
-                    id=''
+                    {...register('userRole')}
                   >
-                    <option value='customer'>Customer</option>
-                    <option value='seller'>Seller</option>
+                    <option value='student'>Student</option>
+                    <option value='moderator'>Moderator</option>
                     <option value='admin'>Admin</option>
                   </select>
                 </div>
                 <div className='flex mt-2 justify-around'>
                   <button
-                    type='button'
                     className='cursor-pointer inline-flex justify-center rounded-md border border-transparent bg-green-100 px-4 py-2 text-sm font-medium text-green-900 hover:bg-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2'
                   >
                     Update

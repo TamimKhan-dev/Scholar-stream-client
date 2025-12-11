@@ -41,12 +41,12 @@ const EditScholarship = ({ myModal, scholarship, refetch }) => {
       );
       
       toast.success("Scholarship updated successfully!");
+      refetch();
     } catch (err) {
       console.log(err.message);
     }
     finally {
       closeModal();
-      refetch();
     }
   };
 

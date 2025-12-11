@@ -32,12 +32,14 @@ const ManageScholarshipsDataRow = ({ scholarship, index, refetch }) => {
         </td>
 
         <td className="space-x-3 py-5 border-b border-gray-200 bg-white text-sm">
-          <button onClick={() => myModal.current.showModal()} className="py-1 cursor-pointer px-2 rounded-3xl bg-green-400 text-white">
-            Edit
+          <div className="flex flex-nowrap gap-3">
+            <button onClick={() => myModal.current.showModal()} className="py-1 cursor-pointer px-2 rounded-full bg-primary text-white">
+            Update
           </button>
-          <button className="py-1 px-2 rounded-3xl cursor-pointer bg-red-400 text-white">
+          <button className="py-1 px-2 rounded-full cursor-pointer bg-red-600 text-white">
             Delete
           </button>
+          </div>
           <EditScholarship myModal={myModal} scholarship={scholarship} refetch={refetch}/>
         </td>
       </tr>
