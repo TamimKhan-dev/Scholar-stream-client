@@ -8,11 +8,12 @@ import { imageUpload } from "../../utils/imageUpload";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const Register = () => {
-  const { createUser, updateUserProfile, signInWithGoogle, loading } = useAuth();
+  const { createUser, updateUserProfile, signInWithGoogle, loading } =
+    useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const axiosSecure = useAxiosSecure();
-  
+
   const from = location.state || "/";
   const {
     register,
@@ -25,20 +26,17 @@ const Register = () => {
 
     try {
       const imageURL = await imageUpload(image[0]);
-      
+
       await createUser(email, password);
-      await updateUserProfile(
-        name,
-        imageURL
-      );
+      await updateUserProfile(name, imageURL);
 
       const userInfo = {
-        name, 
+        name,
         email,
-        imageURL
-      }
+        imageURL,
+      };
 
-      axiosSecure.post('/users', userInfo)
+      await axiosSecure.post("/users", userInfo);
 
       navigate(from, { replace: true });
       toast.success("Signup Successful");
@@ -50,10 +48,27 @@ const Register = () => {
 
   const handleGoogleSignIn = async () => {
     try {
-      await signInWithGoogle();
+      const result = await signInWithGoogle();
+      const loggedUser = result.user;
+
+      const userInfo = {
+        name: loggedUser.displayName,
+        email: loggedUser.email,
+        imageURL: loggedUser.photoURL,
+      };
+
+      try {
+        await axiosSecure.post("/users", userInfo);
+        toast.success("Signup Successful");
+      } catch (err) {
+        if (err.response?.status === 409) {
+          toast.error('User already exists');
+        } else {
+          throw err; 
+        }
+      }
 
       navigate(from, { replace: true });
-      toast.success("Signup Successful");
     } catch (err) {
       console.log(err);
       toast.error(err?.message);
@@ -198,7 +213,11 @@ const Register = () => {
               type="submit"
               className="bg-primary cursor-pointer w-full rounded-md py-3 text-white"
             >
-              { loading ? <LiaHourglassStartSolid className='animate-spin m-auto' /> : 'Sign Up' }
+              {loading ? (
+                <LiaHourglassStartSolid className="animate-spin m-auto" />
+              ) : (
+                "Sign Up"
+              )}
             </button>
           </div>
         </form>

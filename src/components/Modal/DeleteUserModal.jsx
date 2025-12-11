@@ -1,11 +1,20 @@
 import React from 'react';
 import { AlertTriangle } from 'lucide-react';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
+import toast from 'react-hot-toast';
 
 const DeleteUserModal = ({ deleteOpen, setDeleteOpen, user }) => {
+    const axiosSecure = useAxiosSecure();
 
-    const deleteUser = () => {
-        console.log('delete')
-        setDeleteOpen(false);
+    const deleteUser = async () => {
+        try {
+          await axiosSecure.delete(`/users/${user._id}`)
+          toast.success('User deleted successfully!');
+          setDeleteOpen(false);
+        }
+        catch(err) {
+          console.log(err.message);
+        }
     }
 
     return (
