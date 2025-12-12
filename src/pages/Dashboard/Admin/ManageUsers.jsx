@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import UserDataRow from "../../../components/Dashboard/TableRows/UserDataRow";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 
 const ManageUsers = () => {
   const axiosSecure = useAxiosSecure();
@@ -15,9 +15,14 @@ const ManageUsers = () => {
     },
   });
 
-  useEffect(() => {
-    console.log(filterValue)
-  }, [filterValue])
+  const filteredUsers = useMemo(() => {
+    if (!filterValue || filterValue === 'all') {
+      return users;
+    }
+
+    return users.filter((user) => user.role === filterValue);
+  }, [filterValue, users]);
+
 
   return (
     <>
@@ -62,8 +67,13 @@ const ManageUsers = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {users.map((user, index) => (
-                    <UserDataRow key={user._id} user={user} index={index} refetch={refetch}/>
+                  {filteredUsers.map((user, index) => (
+                    <UserDataRow
+                      key={user._id}
+                      user={user}
+                      index={index}
+                      refetch={refetch}
+                    />
                   ))}
                 </tbody>
               </table>
@@ -73,17 +83,16 @@ const ManageUsers = () => {
         <div className="absolute top-0 right-0 sm:right-8 items-center flex gap-2">
           <p className="text-nowrap font-semibold">Filter Users:</p>
           <select
-          defaultValue="Select a role"
-          className="select min-w-50"
-          onChange={(e) => setFilterValue(e.target.value)}
-        >
-          <option disabled={true} >
-            Select a role
-          </option>
-          <option>Student</option>
-          <option>Moderator</option>
-          <option>Admin</option>
-        </select>
+            defaultValue="Select a role"
+            className="select min-w-50"
+            onChange={(e) => setFilterValue(e.target.value)}
+          >
+            <option disabled={true}>Select a role</option>
+            <option value='all'>All</option>
+            <option value='student'>Student</option>
+            <option value='moderator'>Moderator</option>
+            <option value='admin'>Admin</option>
+          </select>
         </div>
       </div>
     </>
