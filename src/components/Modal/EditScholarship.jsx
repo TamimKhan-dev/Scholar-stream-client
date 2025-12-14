@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { imageUpload } from "../../utils/imageUpload";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { toast } from "react-hot-toast";
+import { format, parse } from "date-fns";
+import '../../index.css'
 
 const EditScholarship = ({ myModal, scholarship, refetch }) => {
   const axiosSecure = useAxiosSecure();
@@ -10,9 +12,22 @@ const EditScholarship = ({ myModal, scholarship, refetch }) => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
-    defaultValues: scholarship,
-  });
+    reset,
+  } = useForm();
+
+  useEffect(() => {
+    if (scholarship) {
+      reset({
+        ...scholarship,
+        applicationDeadline: scholarship.applicationDeadline
+          ? format(
+              parse(scholarship.applicationDeadline, "dd/MM/yyyy", new Date()),
+              "yyyy-MM-dd"
+            )
+          : "",
+      });
+    }
+  }, [reset, scholarship]);
 
   const closeModal = () => {
     myModal.current?.close();
@@ -22,8 +37,16 @@ const EditScholarship = ({ myModal, scholarship, refetch }) => {
     try {
       const updateScholarshipInfo = {};
 
+      if (data.applicationDeadline) {
+        updateScholarshipInfo.applicationDeadline = format(
+          new Date(data.applicationDeadline),
+          "dd/MM/yyyy"
+        );
+      }
+
       for (const key in data) {
-        if (key === "universityImage") continue;
+        if (key === "universityImage" || key === "applicationDeadline")
+          continue;
 
         if (data[key] !== scholarship[key]) {
           updateScholarshipInfo[key] = data[key];
@@ -39,13 +62,12 @@ const EditScholarship = ({ myModal, scholarship, refetch }) => {
         `/scholarships/${data._id}`,
         updateScholarshipInfo
       );
-      
+
       toast.success("Scholarship updated successfully!");
       refetch();
     } catch (err) {
       console.log(err.message);
-    }
-    finally {
+    } finally {
       closeModal();
     }
   };
@@ -111,7 +133,10 @@ const EditScholarship = ({ myModal, scholarship, refetch }) => {
               </label>
               <div className="flex items-center gap-3">
                 <img
-                  src={scholarship.universityImage}
+                  src={
+                    scholarship.universityImage ||
+                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUhIEOpEBie-LYpu0KOJUPokK5A0qM1wj6iw&s"
+                  }
                   alt="University"
                   className="w-16 h-16 object-cover rounded border border-base-300"
                 />
@@ -272,8 +297,8 @@ const EditScholarship = ({ myModal, scholarship, refetch }) => {
                   Application Fees
                 </label>
                 <input
-                  type="text"
-                  className={`input input-bordered w-full ${
+                  type="number"
+                  className={`input no-spinner input-bordered w-full ${
                     errors.applicationFees ? "input-error" : ""
                   }`}
                   {...register("applicationFees", {

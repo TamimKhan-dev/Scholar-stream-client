@@ -13,6 +13,7 @@ const AddScholarshipForm = () => {
     register,
     handleSubmit,
     formState: { errors },
+    reset
   } = useForm();
   const axiosSecure = useAxiosSecure();
 
@@ -37,8 +38,8 @@ const AddScholarshipForm = () => {
 
       setIsSending(true);
       await axiosSecure.post("/scholarships", scholarshipInfo);
-
       toast.success("Scholarship added successfully");
+      reset();
     } catch (err) {
       console.log(err.message);
       toast.error("Something went wrong");

@@ -1,91 +1,75 @@
-import { FaUserAlt, FaDollarSign } from 'react-icons/fa'
-import { BsFillCartPlusFill, BsFillHouseDoorFill } from 'react-icons/bs'
+import HorizontalBarChart from "../Statistics/HorizontalBarChart";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import { useQuery } from "@tanstack/react-query";
 
 const AdminStatistics = () => {
+  const axiosSecure = useAxiosSecure();
+
+  const { data: users = [] } = useQuery({
+    queryKey: ["users"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/users");
+      return res.data;
+    },
+  });
+
+  const { data: scholarships = [] } = useQuery({
+    queryKey: ["scholarships"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/scholarships");
+      return res.data;
+    },
+  });
+
   return (
     <div>
-      <div className='mt-12'>
-        {/* small cards */}
-        <div className='mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 grow'>
-          {/* Sales Card */}
-          <div className='relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md'>
-            <div
-              className={`bg-clip-border mx-4 rounded-xl overflow-hidden bg-linear-to-tr shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center from-orange-600 to-orange-400 text-white shadow-orange-500/40`}
-            >
-              <FaDollarSign className='w-6 h-6 text-white' />
-            </div>
-            <div className='p-4 text-right'>
-              <p className='block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600'>
-                Total Revenue
+      <div className="mt-12">
+        <div className="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 lg:grid-cols-3 grow">
+          {/* Total users */}
+          <div className="relative bg-linear-to-r from-[#89caf9] to-[#695cab] flex justify-center items-center rounded-xl shadow-md p-1">
+            <div className="p-4 text-center w-full rounded-lg bg-linear-to-r from-[#cae4f5] to-[#cae4f5] text-black">
+              <p className="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">
+                Total Users
               </p>
-              <h4 className='block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900'>
-                $120
+              <h4 className="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
+                {users.length}
               </h4>
             </div>
           </div>
-          {/* Total Orders */}
-          <div className='relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md'>
-            <div
-              className={`bg-clip-border mx-4 rounded-xl overflow-hidden bg-linear-to-tr shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center from-blue-600 to-blue-400 text-white shadow-blue-500/40`}
-            >
-              <BsFillCartPlusFill className='w-6 h-6 text-white' />
-            </div>
-            <div className='p-4 text-right'>
-              <p className='block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600'>
-                Total Orders
+          {/* Total Fees collected */}
+          <div className="relative bg-linear-to-r from-[#abdf78] to-[#648a5d] flex justify-center items-center rounded-xl shadow-md p-1">
+            <div className="p-4 text-center w-full rounded-lg bg-linear-to-r from-[#d5f1c9] to-[#d8dee0] text-black">
+              <p className="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">
+                Total Fees Collected
               </p>
-              <h4 className='block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900'>
+              <h4 className="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
                 120
               </h4>
             </div>
           </div>
-          {/* Total Plants */}
-          <div className='relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md'>
-            <div
-              className={`bg-clip-border mx-4 rounded-xl overflow-hidden bg-linear-to-tr shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center from-pink-600 to-pink-400 text-white shadow-pink-500/40`}
-            >
-              <BsFillHouseDoorFill className='w-6 h-6 text-white' />
-            </div>
-            <div className='p-4 text-right'>
-              <p className='block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600'>
-                Total Plants
+          {/* Total Scholarships */}
+          <div className="relative bg-linear-to-r from-[#f1a268] to-[#a06f55] flex justify-center items-center rounded-xl shadow-md p-1">
+            <div className="p-4 text-center w-full rounded-lg bg-linear-to-r from-[#fadfc2] to-[#eadcdb]">
+              <p className="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">
+                Total Scholarships
               </p>
-              <h4 className='block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900'>
-                120
-              </h4>
-            </div>
-          </div>
-          {/* Users Card */}
-          <div className='relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md'>
-            <div
-              className={`bg-clip-border mx-4 rounded-xl overflow-hidden bg-linear-to-tr shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center from-green-600 to-green-400 text-white shadow-green-500/40`}
-            >
-              <FaUserAlt className='w-6 h-6 text-white' />
-            </div>
-            <div className='p-4 text-right'>
-              <p className='block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600'>
-                Total User
-              </p>
-              <h4 className='block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900'>
-                10
+              <h4 className="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
+                {scholarships.length}
               </h4>
             </div>
           </div>
         </div>
 
-        <div className='mb-4 grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3'>
-          {/*Sales Bar Chart */}
-          <div className='relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md overflow-hidden xl:col-span-2'>
-            {/* Chart goes here.. */}
-          </div>
-          {/* Calender */}
-          <div className=' relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md overflow-hidden'>
-            {/* Calender */}
+        <div className="mb-4">
+          <div className="relative bg-white rounded-xl shadow-md overflow-hidden xl:col-span-2">
+            <div className="w-full h-96">
+              <HorizontalBarChart />
+            </div>
           </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default AdminStatistics
+export default AdminStatistics;
