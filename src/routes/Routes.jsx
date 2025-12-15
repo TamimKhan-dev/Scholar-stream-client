@@ -15,6 +15,8 @@ import Register from '../pages/Register/Register'
 import AllScholarships from '../pages/AllScholarships/AllScholarships'
 import ScholarshipDetails from '../pages/ScholarshipDetails/ScholarshipDetails'
 import AddScholarship from '../pages/Dashboard/Admin/AddScholarship'
+import PaymentSuccess from '../pages/ScholarshipDetails/PaymentSuccess'
+import CancelPayment from '../pages/ScholarshipDetails/PaymentCancelled'
 
 export const router = createBrowserRouter([
   {
@@ -33,7 +35,15 @@ export const router = createBrowserRouter([
       {
         path: '/all-scholarships',
         Component: AllScholarships
-      }
+      },
+      {
+        path: 'scholarship/payment-success',
+        element: <PaymentSuccess />
+      },
+      {
+        path: 'scholarship/payment-cancelled/:scholarshipId',
+        element: <CancelPayment />
+      },
     ],
   },
   { path: '/login', element: <Login /> },
@@ -98,7 +108,7 @@ export const router = createBrowserRouter([
       {
         path: 'manage-orders',
         element: <ManageOrders />,
-      },
+      }
     ],
   },
 ])

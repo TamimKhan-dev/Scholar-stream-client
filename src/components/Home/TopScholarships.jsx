@@ -10,14 +10,18 @@ import LoadingSpinner from "../Shared/LoadingSpinner";
 
 const TopScholarships = () => {
   const axiosSecure = useAxiosSecure();
-
-  const { data: scholarships = [], isLoading } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["scholarships"],
     queryFn: async () => {
       const res = await axiosSecure.get("/scholarships");
       return res.data;
     },
   });
+  const scholarships = data
+    ? data
+        .sort((a, b) => new Date(b.postDate) - new Date(a.postDate))
+        .slice(0, 6)
+    : [];
 
   return (
     <div className="mb-20 relative">
@@ -50,7 +54,7 @@ const TopScholarships = () => {
               key={scholarship._id}
               className="bg-white rounded-lg min-h-85 border-2 border-gray-200"
             >
-              <TopScholarshipCards scholarship={scholarship}/>
+              <TopScholarshipCards scholarship={scholarship} />
             </SwiperSlide>
           ))}
         </Swiper>

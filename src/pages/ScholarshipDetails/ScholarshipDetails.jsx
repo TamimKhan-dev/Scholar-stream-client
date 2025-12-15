@@ -8,183 +8,225 @@ import { useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import LoadingSpinner from "../../components/Shared/LoadingSpinner";
+import ErrorPage from "../../pages/ErrorPage";
+import useAuth from "../../hooks/useAuth";
+import { toast } from 'react-hot-toast'
 
 const ScholarshipDetails = () => {
   const { id } = useParams();
+  const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
-  const { data: scholarship = {}, isLoading } = useQuery({
+  const { data: scholarship = {}, isLoading, isError } = useQuery({
     queryKey: ["scholarship", id],
     queryFn: async () => {
       const res = await axiosSecure(`/scholarships/${id}`);
       return res.data;
     },
   });
+  const { data: loggedInUser } = useQuery({
+    queryKey: ["loggedInUser", user.email],
+    queryFn: async () => {
+      const res = await axiosSecure(`/users/${user.email}`);
+      return res.data;
+    },
+  });
+
+  const handlePayment = async () => {
+    const paymentInfo = {
+      scholarshipId: scholarship._id,
+      userId: loggedInUser._id,
+      userName: loggedInUser.name,
+      userEmail: loggedInUser.email,
+      universityName: scholarship.universityName,
+      scholarshipCategory: scholarship.scholarshipCategory,
+      degree: scholarship.degree,
+      applicationFees: scholarship.applicationFees,
+      serviceCharge: scholarship.serviceCharge,
+    }
+
+    try{
+      const { data } = await axiosSecure.post('/applications', paymentInfo);
+
+      const stripeRes = await axiosSecure.post('/create-checkout-session', {applicationId: data.applicationId});
+
+      window.location.href = stripeRes.data.url;
+    }
+    catch(err) {
+      console.log(err.response.data.message);
+      toast.error(err.response.data.message)
+    }
+  };
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
+  if (isError) {
+    return <ErrorPage />;
+  }
 
   return (
     <div>
-      {isLoading ? (
-        <LoadingSpinner />
-      ) : (
-        <Container>
-          <div className="relative w-full h-[400px] rounded-xl mt-8 mb-18 overflow-hidden">
-            <img
-              src={scholarship.universityImage}
-              alt=""
-              className="w-full h-full object-start"
-            />
-            <div className="absolute inset-0 bg-linear-to-t from-black to-transparent rounded-xl"></div>
-            <div className="absolute z-50 left-1/2 -translate-x-[50%] bottom-20 space-y-8">
-              <h3 className="text-2xl md:text-4xl text-center font-bold text-white">
-                {scholarship.scholarshipName}
-              </h3>
-              <ul className="flex flex-col gap-2 md:flex-row">
-                <li className="bg-primary px-3 py-1.5 text-white flex items-center text-nowrap w-fit gap-0.5 rounded-3xl">
-                  <GoTrophy /> University World Rank: #{" "}
-                  {scholarship.universityRank}
-                </li>
-                <li className="bg-primary px-3 py-1.5 text-white flex items-center text-nowrap w-fit gap-0.5 rounded-3xl">
-                  <SlCalender /> Deadline: {scholarship.applicationDeadline}
-                </li>
-                <li className="bg-primary px-3 py-1.5 text-white flex items-center text-nowrap w-fit gap-0.5 rounded-3xl">
-                  <IoLocationOutline /> Location: {scholarship.universityCity},{" "}
-                  {scholarship.universityCountry}
-                </li>
-              </ul>
+      <Container>
+        <div className="relative w-full h-[400px] rounded-xl mt-8 mb-18 overflow-hidden">
+          <img
+            src={scholarship.universityImage}
+            alt=""
+            className="w-full h-full object-start"
+          />
+          <div className="absolute inset-0 bg-linear-to-t from-black to-transparent rounded-xl"></div>
+          <div className="absolute z-50 left-1/2 -translate-x-[50%] bottom-20 space-y-8">
+            <h3 className="text-2xl md:text-4xl text-center font-bold text-white">
+              {scholarship.scholarshipName}
+            </h3>
+            <ul className="flex flex-col gap-2 md:flex-row">
+              <li className="bg-primary px-3 py-1.5 text-white flex items-center text-nowrap w-fit gap-0.5 rounded-3xl">
+                <GoTrophy /> University World Rank: #{" "}
+                {scholarship.universityRank}
+              </li>
+              <li className="bg-primary px-3 py-1.5 text-white flex items-center text-nowrap w-fit gap-0.5 rounded-3xl">
+                <SlCalender /> Deadline: {scholarship.applicationDeadline}
+              </li>
+              <li className="bg-primary px-3 py-1.5 text-white flex items-center text-nowrap w-fit gap-0.5 rounded-3xl">
+                <IoLocationOutline /> Location: {scholarship.universityCity},{" "}
+                {scholarship.universityCountry}
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="mb-20 xl:flex gap-8">
+          {/* About Scholarship section */}
+          <div className="w-full mb-8">
+            <div className="mb-3">
+              <h4 className="text-xl md:text-3xl font-bold mb-3">
+                About the Scholarship
+              </h4>
+              <p className="text-gray-500">
+                The {scholarship.scholarshipName} is a prestigious{" "}
+                {scholarship.scholarshipCategory} program designed to support
+                talented and driven students who demonstrate exceptional
+                leadership skills, academic dedication, and a passion for making
+                a meaningful impact in their communities. Offered by{" "}
+                {scholarship.universityName} in {scholarship.universityCity},{" "}
+                {scholarship.universityCountry}, this scholarship provides
+                financial support, including coverage of tuition fees and other
+                essential expenses, along with mentorship opportunities and
+                access to a global network of professionals and scholars. Ideal
+                for students pursuing a {scholarship.degree} in{" "}
+                {scholarship.subjectCategory}, the {scholarship.scholarshipName}{" "}
+                empowers recipients to excel academically while developing the
+                skills and connections necessary for long-term success.
+                Applications are open until {scholarship.applicationDeadline},
+                giving aspiring scholars the chance to join a distinguished
+                program that fosters both personal and professional growth.
+              </p>
             </div>
+
+            <div className="w-full flex flex-col md:flex-row gap-3 mb-3">
+              <div className="bg-gray-100 border-2 w-full border-gray-200 rounded-xl py-2 px-4">
+                <h5 className="font-bold">Stipend & Coverage:</h5>
+                <p>
+                  {scholarship.scholarshipCategory} Tuition + $
+                  {scholarship.tuitionFees} Anual Living Stipend
+                </p>
+              </div>
+              <div className="bg-gray-100 border-2 w-full border-gray-200 rounded-xl py-2 px-4">
+                <h5 className="font-bold">Application Fees:</h5>
+                <p>${scholarship.applicationFees}(Non-refundable)</p>
+              </div>
+            </div>
+
+            <button onClick={handlePayment} className="btn w-full bg-primary text-white rounded-lg">
+              Apply for Scholarship
+            </button>
           </div>
 
-          <div className="mb-20 xl:flex gap-8">
-            {/* About Scholarship section */}
-            <div className="w-full mb-8">
-              <div className="mb-3">
-                <h4 className="text-xl md:text-3xl font-bold mb-3">
-                  About the Scholarship
-                </h4>
-                <p className="text-gray-500">
-                  The {scholarship.scholarshipName} is a prestigious {scholarship.scholarshipCategory}{" "}
-                  program designed to support talented and driven students who
-                  demonstrate exceptional leadership skills, academic
-                  dedication, and a passion for making a meaningful impact in
-                  their communities. Offered by {scholarship.universityName} in{" "}
-                  {scholarship.universityCity}, {scholarship.universityCountry}, this scholarship
-                  provides financial support, including coverage of tuition fees
-                  and other essential expenses, along with mentorship
-                  opportunities and access to a global network of professionals
-                  and scholars. Ideal for students pursuing a {scholarship.degree} in{" "}
-                  {scholarship.subjectCategory}, the {scholarship.scholarshipName} empowers recipients
-                  to excel academically while developing the skills and
-                  connections necessary for long-term success. Applications are
-                  open until {scholarship.applicationDeadline}, giving aspiring scholars the
-                  chance to join a distinguished program that fosters both
-                  personal and professional growth.
+          {/* Scholarship Reviews section */}
+          <div>
+            <h4 className="text-xl font-bold mb-3">
+              Reviews & Experiences (3)
+            </h4>
+
+            <div className="max-h-96 overflow-y-auto space-y-3">
+              <div className="border-2 p-3 border-gray-100 rounded-lg">
+                <div className="flex items-center justify-between gap-2 mb-3">
+                  <div className="flex items-center gap-2">
+                    <div className="h-10 w-10 rounded-full bg-gray-200"></div>
+                    <div>
+                      <h5 className="font-bold">Alice chen</h5>
+                      <p className="text-gray-500">oct 25, 2026</p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-0.5 text-xl text-yellow-400">
+                    <IoMdStar />
+                    <IoMdStar />
+                    <IoMdStar />
+                    <IoMdStar />
+                    <IoMdStar />
+                  </div>
+                </div>
+
+                <p className="font-semibold">
+                  An incredible opportunity! The application process was
+                  straightforward, and the funding is a huge relief.
                 </p>
               </div>
 
-              <div className="w-full flex flex-col md:flex-row gap-3 mb-3">
-                <div className="bg-gray-100 border-2 w-full border-gray-200 rounded-xl py-2 px-4">
-                  <h5 className="font-bold">Stipend & Coverage:</h5>
-                  <p>
-                    {scholarship.scholarshipCategory} Tuition + $
-                    {scholarship.tuitionFees} Anual Living Stipend
-                  </p>
+              <div className="border-2 p-3 border-gray-100 rounded-lg">
+                <div className="flex items-center justify-between gap-2 mb-3">
+                  <div className="flex items-center gap-2">
+                    <div className="h-10 w-10 rounded-full bg-gray-200"></div>
+                    <div>
+                      <h5 className="font-bold">Alice chen</h5>
+                      <p className="text-gray-500">oct 25, 2026</p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-0.5 text-xl text-yellow-400">
+                    <IoMdStar />
+                    <IoMdStar />
+                    <IoMdStar />
+                    <IoMdStar />
+                    <IoMdStar />
+                  </div>
                 </div>
-                <div className="bg-gray-100 border-2 w-full border-gray-200 rounded-xl py-2 px-4">
-                  <h5 className="font-bold">Application Fees:</h5>
-                  <p>${scholarship.applicationFees}(Non-refundable)</p>
-                </div>
+
+                <p className="font-semibold">
+                  An incredible opportunity! The application process was
+                  straightforward, and the funding is a huge relief.
+                </p>
               </div>
 
-              <button className="btn w-full bg-primary text-white rounded-lg">
-                Apply for Scholarship
-              </button>
-            </div>
-
-            {/* Scholarship Reviews section */}
-            <div>
-              <h4 className="text-xl font-bold mb-3">
-                Reviews & Experiences (3)
-              </h4>
-
-              <div className="max-h-96 overflow-y-auto space-y-3">
-                <div className="border-2 p-3 border-gray-100 rounded-lg">
-                  <div className="flex items-center justify-between gap-2 mb-3">
-                    <div className="flex items-center gap-2">
-                      <div className="h-10 w-10 rounded-full bg-gray-200"></div>
-                      <div>
-                        <h5 className="font-bold">Alice chen</h5>
-                        <p className="text-gray-500">oct 25, 2026</p>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-0.5 text-xl text-yellow-400">
-                      <IoMdStar />
-                      <IoMdStar />
-                      <IoMdStar />
-                      <IoMdStar />
-                      <IoMdStar />
+              <div className="border-2 p-3 border-gray-100 rounded-lg">
+                <div className="flex items-center justify-between gap-2 mb-3">
+                  <div className="flex items-center gap-2">
+                    <div className="h-10 w-10 rounded-full bg-gray-200"></div>
+                    <div>
+                      <h5 className="font-bold">Alice chen</h5>
+                      <p className="text-gray-500">oct 25, 2026</p>
                     </div>
                   </div>
 
-                  <p className="font-semibold">
-                    An incredible opportunity! The application process was
-                    straightforward, and the funding is a huge relief.
-                  </p>
-                </div>
-
-                <div className="border-2 p-3 border-gray-100 rounded-lg">
-                  <div className="flex items-center justify-between gap-2 mb-3">
-                    <div className="flex items-center gap-2">
-                      <div className="h-10 w-10 rounded-full bg-gray-200"></div>
-                      <div>
-                        <h5 className="font-bold">Alice chen</h5>
-                        <p className="text-gray-500">oct 25, 2026</p>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-0.5 text-xl text-yellow-400">
-                      <IoMdStar />
-                      <IoMdStar />
-                      <IoMdStar />
-                      <IoMdStar />
-                      <IoMdStar />
-                    </div>
+                  <div className="flex gap-0.5 text-xl text-yellow-400">
+                    <IoMdStar />
+                    <IoMdStar />
+                    <IoMdStar />
+                    <IoMdStar />
+                    <IoMdStar />
                   </div>
-
-                  <p className="font-semibold">
-                    An incredible opportunity! The application process was
-                    straightforward, and the funding is a huge relief.
-                  </p>
                 </div>
 
-                <div className="border-2 p-3 border-gray-100 rounded-lg">
-                  <div className="flex items-center justify-between gap-2 mb-3">
-                    <div className="flex items-center gap-2">
-                      <div className="h-10 w-10 rounded-full bg-gray-200"></div>
-                      <div>
-                        <h5 className="font-bold">Alice chen</h5>
-                        <p className="text-gray-500">oct 25, 2026</p>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-0.5 text-xl text-yellow-400">
-                      <IoMdStar />
-                      <IoMdStar />
-                      <IoMdStar />
-                      <IoMdStar />
-                      <IoMdStar />
-                    </div>
-                  </div>
-
-                  <p className="font-semibold">
-                    An incredible opportunity! The application process was
-                    straightforward, and the funding is a huge relief.
-                  </p>
-                </div>
+                <p className="font-semibold">
+                  An incredible opportunity! The application process was
+                  straightforward, and the funding is a huge relief.
+                </p>
               </div>
             </div>
           </div>
-        </Container>
-      )}
+        </div>
+      </Container>
     </div>
   );
 };
