@@ -9,7 +9,6 @@ import ManageUsers from '../pages/Dashboard/Admin/ManageUsers'
 import Profile from '../pages/Dashboard/Common/Profile'
 import Statistics from '../pages/Dashboard/Admin/Statistics'
 import MyInventory from '../pages/Dashboard/Seller/MyInventory'
-import ManageOrders from '../pages/Dashboard/Seller/ManageOrders'
 import MyOrders from '../pages/Dashboard/Admin/ManageScholarships'
 import Register from '../pages/Register/Register'
 import AllScholarships from '../pages/AllScholarships/AllScholarships'
@@ -17,6 +16,7 @@ import ScholarshipDetails from '../pages/ScholarshipDetails/ScholarshipDetails'
 import AddScholarship from '../pages/Dashboard/Admin/AddScholarship'
 import PaymentSuccess from '../pages/ScholarshipDetails/PaymentSuccess'
 import CancelPayment from '../pages/ScholarshipDetails/PaymentCancelled'
+import ManageApplications from '../pages/Dashboard/Moderator/ManageApplications'
 
 export const router = createBrowserRouter([
   {
@@ -106,8 +106,8 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'manage-orders',
-        element: <ManageOrders />,
+        path: 'manage-applications',
+        element: <ManageApplications />,
       }
     ],
   },

@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import CustomerOrderDataRow from '../../../components/Dashboard/TableRows/ManageScholarshipsDataRow'
+import ManageScholarshipsDataRow from '../../../components/Dashboard/TableRows/ManageScholarshipsDataRow'
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 
 const ManageScholarships = () => {
@@ -73,7 +73,7 @@ const ManageScholarships = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  { scholarships.map((scholarship, index) => <CustomerOrderDataRow key={scholarship._id} scholarship={scholarship} index={index} refetch={refetch}/>)}
+                  { scholarships.map((scholarship, index) => <ManageScholarshipsDataRow key={scholarship._id} scholarship={scholarship} index={index} refetch={refetch}/>)}
                 </tbody>
               </table>
             </div>
