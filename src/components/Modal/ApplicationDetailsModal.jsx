@@ -1,8 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import { Button, Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 
-const ApplicationDetailsModal = ({ isOpen, setIsOpen, app }) => {
+const ApplicationDetailsModal = ({ isDetailsOpen, setIsDetailsOpen, app }) => {
+
+
+  function close() {
+    setIsDetailsOpen(false);
+  }
   const axiosSecure = useAxiosSecure();
   const { data: scholarship = {} } = useQuery({
     queryKey: ["scholarship", app.scholarshipId],
@@ -20,18 +26,41 @@ const ApplicationDetailsModal = ({ isOpen, setIsOpen, app }) => {
   });
 
   return (
-    <dialog className="bg-gray-100 p-4 flex items-center justify-center">
-      {/* Modal */}
-      {isOpen && (
-        <div className="fixed inset-0 z-50 overflow-y-auto">
-          {/* Modal Container */}
+        <>
+
+      <Dialog 
+        open={isDetailsOpen} 
+        as="div" 
+        className="relative z-50 focus:outline-none" 
+        onClose={close}
+      >
+        <div
+          className="fixed inset-0 bg-black/30 backdrop-blur-sm"
+          aria-hidden="true"
+        />
+        
+        <div className="fixed inset-0 z-50 w-full overflow-y-auto">
           <div className="flex min-h-full items-center justify-center p-4">
-            <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-5xl max-h-[90vh] overflow-y-auto">
+            <DialogPanel
+              transition
+              className="w-full relative max-w-5xl rounded-2xl bg-white shadow-2xl lg:max-h-none max-h-[90vh] overflow-y-auto duration-300 ease-out data-closed:transform-[scale(95%)] data-closed:opacity-0"
+            >
+              {/* Close Button */}
+            <button
+              onClick={close}
+              className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+              aria-label="Close"
+            >
+              <svg className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
               {/* Header */}
               <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 rounded-t-2xl z-10">
-                <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
+                <DialogTitle as="h2" className="text-xl sm:text-2xl font-bold text-gray-900">
                   Application Details
-                </h2>
+                </DialogTitle>
               </div>
 
               {/* Content */}
@@ -47,8 +76,7 @@ const ApplicationDetailsModal = ({ isOpen, setIsOpen, app }) => {
                         <span className="font-semibold">Name:</span> {user.name}
                       </p>
                       <p>
-                        <span className="font-semibold">Email:</span>{" "}
-                        {user.email}
+                        <span className="font-semibold">Email:</span> {user.email}
                       </p>
                     </div>
                   </div>
@@ -85,7 +113,7 @@ const ApplicationDetailsModal = ({ isOpen, setIsOpen, app }) => {
 
                     {/* University Image */}
                     <img
-                      src={scholarship?.universityImage}
+                      src={scholarship.universityImage}
                       alt="University"
                       className="w-full h-40 sm:h-48 object-cover rounded-lg shadow-md mb-4"
                     />
@@ -174,22 +202,14 @@ const ApplicationDetailsModal = ({ isOpen, setIsOpen, app }) => {
                   </div>
                 </div>
               </div>
-
-              {/* Footer */}
-              <div className="sticky bottom-0 bg-white border-t border-gray-200 px-6 py-4 flex justify-end rounded-b-2xl">
-                <button
-                  onClick={() => setIsOpen(false)}
-                  className="px-6 py-2.5 bg-primary cursor-pointer text-white font-medium rounded-lg hover:bg-gray-700 transition-colors"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
+            </DialogPanel>
           </div>
         </div>
-      )}
-    </dialog>
+      </Dialog>
+    </>
   );
+
+     
 };
 
 export default ApplicationDetailsModal;

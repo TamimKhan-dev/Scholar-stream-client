@@ -16,28 +16,28 @@ const ManageApplications = () => {
     <div className="bg-white p-4 sm:p-6 shadow rounded-lg">
       {/* Table Container with Horizontal Scroll */}
       <div className="overflow-x-auto">
-        <table className="w-full min-w-max border-collapse">
+        <table className="table border-collapse w-full">
           <thead>
             <tr className="border-b border-gray-200">
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider whitespace-nowrap">
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
                 Applicant Name
               </th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider whitespace-nowrap">
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
                 Applicant Email
               </th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider whitespace-nowrap">
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
                 University Name
               </th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider whitespace-nowrap">
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
                 Application Feedback
               </th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider whitespace-nowrap">
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
                 Application Status
               </th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider whitespace-nowrap">
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
                 Payment Status
               </th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider whitespace-nowrap">
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
                 Actions
               </th>
             </tr>
