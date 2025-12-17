@@ -73,7 +73,7 @@ const MyApplications = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    { applications.map(app => <ApplicationsDataRow app={app} />)}
+                    { applications.map(app => <ApplicationsDataRow key={app._id} app={app} />)}
                   </tbody>
                 </table>
               </div>

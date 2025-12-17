@@ -1,11 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
-import { Button, Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
+import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 
 const ApplicationDetailsModal = ({ isDetailsOpen, setIsDetailsOpen, app }) => {
-
-
   function close() {
     setIsDetailsOpen(false);
   }
@@ -25,20 +23,34 @@ const ApplicationDetailsModal = ({ isDetailsOpen, setIsDetailsOpen, app }) => {
     },
   });
 
-  return (
-        <>
+  const getStatusBadgeClass = (status) => {
+    switch (status) {
+      case "rejected":
+        return "bg-red-100 text-red-800";
+      case "processing":
+        return "bg-blue-100 text-blue-800";
+      case "completed":
+        return "bg-green-100 text-green-800";
+      case "pending":
+        return "bg-yellow-100 text-yellow-800";
+      default:
+        return "bg-gray-100 text-gray-800";
+    }
+  };
 
-      <Dialog 
-        open={isDetailsOpen} 
-        as="div" 
-        className="relative z-50 focus:outline-none" 
+  return (
+    <>
+      <Dialog
+        open={isDetailsOpen}
+        as="div"
+        className="relative z-50 focus:outline-none"
         onClose={close}
       >
         <div
           className="fixed inset-0 bg-black/30 backdrop-blur-sm"
           aria-hidden="true"
         />
-        
+
         <div className="fixed inset-0 z-50 w-full overflow-y-auto">
           <div className="flex min-h-full items-center justify-center p-4">
             <DialogPanel
@@ -46,19 +58,32 @@ const ApplicationDetailsModal = ({ isDetailsOpen, setIsDetailsOpen, app }) => {
               className="w-full relative max-w-5xl rounded-2xl bg-white shadow-2xl lg:max-h-none max-h-[90vh] overflow-y-auto duration-300 ease-out data-closed:transform-[scale(95%)] data-closed:opacity-0"
             >
               {/* Close Button */}
-            <button
-              onClick={close}
-              className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
-              aria-label="Close"
-            >
-              <svg className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
+              <button
+                onClick={close}
+                className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+                aria-label="Close"
+              >
+                <svg
+                  className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
 
               {/* Header */}
               <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 rounded-t-2xl z-10">
-                <DialogTitle as="h2" className="text-xl sm:text-2xl font-bold text-gray-900">
+                <DialogTitle
+                  as="h2"
+                  className="text-xl sm:text-2xl font-bold text-gray-900"
+                >
                   Application Details
                 </DialogTitle>
               </div>
@@ -76,7 +101,8 @@ const ApplicationDetailsModal = ({ isDetailsOpen, setIsDetailsOpen, app }) => {
                         <span className="font-semibold">Name:</span> {user.name}
                       </p>
                       <p>
-                        <span className="font-semibold">Email:</span> {user.email}
+                        <span className="font-semibold">Email:</span>{" "}
+                        {user.email}
                       </p>
                     </div>
                   </div>
@@ -90,6 +116,29 @@ const ApplicationDetailsModal = ({ isDetailsOpen, setIsDetailsOpen, app }) => {
                     />
                     <p className="text-xs text-gray-500 mt-2">
                       Profile Picture
+                    </p>
+                  </div>
+
+                  <div className="space-y-2">
+                    <h3 className="text-xl font-bold">Status Overview</h3>
+                    <p>
+                      <span className="font-semibold mr-2">
+                        Application Status:
+                      </span>
+                      <span className={`${getStatusBadgeClass(app.applicationStatus)} px-3 py-1 rounded-full`}>{app.applicationStatus}</span>
+                    </p>
+                    <p>
+                      <span className="font-semibold mr-2">
+                        Payment Status:
+                      </span>
+                      <span className={`${app.paymentStatus === 'paid' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'} px-3 py-1 rounded-full`}>{app.paymentStatus}</span>
+                    </p>
+                  </div>
+
+                  <div>
+                    <h3 className="text-xl font-bold mb-3">Feedback</h3>
+                    <p className="border-3 px-4 py-2 text-gray-600 border-gray-500 bg-gray-200 rounded-3xl min-h-32 max-h-32">
+                      {app?.feedback || 'No feedback yet!'}
                     </p>
                   </div>
                 </div>
@@ -145,7 +194,7 @@ const ApplicationDetailsModal = ({ isDetailsOpen, setIsDetailsOpen, app }) => {
                       <div>
                         <p className="font-semibold">Rank:</p>
                         <p className="text-gray-700">
-                          {scholarship.universityRank}
+                          #{scholarship.universityRank}
                         </p>
                       </div>
                       <div>
@@ -165,19 +214,19 @@ const ApplicationDetailsModal = ({ isDetailsOpen, setIsDetailsOpen, app }) => {
                         <div>
                           <p className="font-semibold">Tuition Fees:</p>
                           <p className="text-gray-700">
-                            {scholarship.tuitionFees}
+                            ${scholarship.tuitionFees}
                           </p>
                         </div>
                         <div>
                           <p className="font-semibold">Application Fees:</p>
                           <p className="text-gray-700">
-                            {scholarship.applicationFees}
+                            ${scholarship.applicationFees}
                           </p>
                         </div>
                         <div>
                           <p className="font-semibold">Service Charge:</p>
                           <p className="text-gray-700">
-                            {scholarship.serviceCharge}
+                            ${scholarship.serviceCharge}
                           </p>
                         </div>
                       </div>
@@ -208,8 +257,6 @@ const ApplicationDetailsModal = ({ isDetailsOpen, setIsDetailsOpen, app }) => {
       </Dialog>
     </>
   );
-
-     
 };
 
 export default ApplicationDetailsModal;

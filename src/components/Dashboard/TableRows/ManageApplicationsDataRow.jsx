@@ -74,13 +74,21 @@ const ManageApplicationsDataRow = ({ app, refetch }) => {
         <div className="flex md:flex-wrap gap-2">
           <button
             onClick={() => setIsDetailsOpen(true)}
-            className={`px-3 py-1.5 text-xs cursor-pointer font-medium text-white  rounded  transition-colors ${app.applicationStatus === 'rejected' ? 'btn-disabled bg-gray-400/70' : 'bg-blue-600 hover:bg-blue-700'}`}
+            className={`px-3 py-1.5 text-xs cursor-pointer font-medium text-white  rounded  transition-colors ${
+              app.applicationStatus === "rejected"
+                ? "btn-disabled bg-gray-400/70"
+                : "bg-blue-600 hover:bg-blue-700"
+            }`}
           >
             Details
           </button>
           <button
             onClick={() => setIsFeedbackOpen(true)}
-            className={`px-3 py-1.5 cursor-pointer text-xs font-medium text-white  rounded  transition-colors ${app.applicationStatus === 'rejected' ? 'btn-disabled bg-gray-400/70' : 'bg-green-600 hover:bg-green-700'}`}
+            className={`px-3 py-1.5 cursor-pointer text-xs font-medium text-white  rounded  transition-colors ${
+              app.applicationStatus === "rejected"
+                ? "btn-disabled bg-gray-400/70"
+                : "bg-green-600 hover:bg-green-700"
+            }`}
           >
             Feedback
           </button>
@@ -89,7 +97,7 @@ const ManageApplicationsDataRow = ({ app, refetch }) => {
               onChange={(e) => handleStatusUpdate(e.target.value)}
               defaultValue="Status update"
               className="select outline-none min-w-34 max-h-8"
-              disabled={app.applicationStatus === 'rejected' && true}
+              disabled={app.applicationStatus === "rejected" && true}
             >
               <option disabled={true}>Status update</option>
               <option value="processing">Processing</option>
@@ -98,7 +106,11 @@ const ManageApplicationsDataRow = ({ app, refetch }) => {
           </div>
           <button
             onClick={() => setIsRejectOpen(true)}
-            className={`px-3 cursor-pointer py-1.5 text-xs font-medium text-white  rounded  transition-colors ${app.applicationStatus === 'rejected' ? 'btn-disabled bg-gray-400/70' : 'bg-red-600 hover:bg-red-700'}`}
+            className={`px-3 cursor-pointer py-1.5 text-xs font-medium text-white  rounded  transition-colors ${
+              app.applicationStatus === "rejected"
+                ? "btn-disabled bg-gray-400/70"
+                : "bg-red-600 hover:bg-red-700"
+            }`}
           >
             Cancel
           </button>
