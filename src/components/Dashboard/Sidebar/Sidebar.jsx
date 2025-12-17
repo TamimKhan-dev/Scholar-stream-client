@@ -11,7 +11,7 @@ import { BsGraphUp } from 'react-icons/bs'
 // User Menu
 import MenuItem from './Menu/MenuItem'
 import AdminMenu from './Menu/AdminMenu'
-import SellerMenu from './Menu/SellerMenu'
+import StudentMenu from './Menu/StudentMenu'
 import ModeratorMenu from './Menu/ModeratorMenu'
 
 const Sidebar = () => {
@@ -80,7 +80,7 @@ const Sidebar = () => {
               />
               {/* Role-Based Menu */}
               <ModeratorMenu />
-              <SellerMenu />
+              <StudentMenu />
               <AdminMenu />
             </nav>
           </div>

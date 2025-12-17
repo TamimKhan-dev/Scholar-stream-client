@@ -13,8 +13,8 @@ const ManageApplications = () => {
   });
 
   return (
-    <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
-      <table className="table">
+    <div className="overflow-x-auto shadow rounded-box border border-base-content/5 bg-base-100">
+      <table className="table min-w-[1100px]">
         <thead>
           <tr>
             <th className="text-xs font-medium text-gray-600 uppercase">

@@ -8,7 +8,7 @@ import DashboardLayout from '../layouts/DashboardLayout'
 import ManageUsers from '../pages/Dashboard/Admin/ManageUsers'
 import Profile from '../pages/Dashboard/Common/Profile'
 import Statistics from '../pages/Dashboard/Admin/Statistics'
-import MyInventory from '../pages/Dashboard/Seller/MyInventory'
+import MyApplications from '../pages/Dashboard/Student/MyApplications'
 import MyOrders from '../pages/Dashboard/Admin/ManageScholarships'
 import Register from '../pages/Register/Register'
 import AllScholarships from '../pages/AllScholarships/AllScholarships'
@@ -74,10 +74,10 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'my-inventory',
+        path: 'my-applications',
         element: (
           <PrivateRoute>
-            <MyInventory />
+            <MyApplications />
           </PrivateRoute>
         ),
       },
