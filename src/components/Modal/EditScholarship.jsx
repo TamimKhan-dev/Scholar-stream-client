@@ -134,7 +134,7 @@ const EditScholarship = ({ myModal, scholarship, refetch }) => {
               <div className="flex items-center gap-3">
                 <img
                   src={
-                    scholarship.universityImage ||
+                    scholarship?.universityImage ||
                     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUhIEOpEBie-LYpu0KOJUPokK5A0qM1wj6iw&s"
                   }
                   alt="University"

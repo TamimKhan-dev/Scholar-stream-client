@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import ApplicationDetailsModal from "../../Modal/ApplicationDetailsModal";
 import FeedbackModal from "../../Modal/FeedbackModal";
-const ManageApplicationsDataRow = ({ app }) => {
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import toast from "react-hot-toast";
+const ManageApplicationsDataRow = ({ app, refetch }) => {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
+  const axiosSecure = useAxiosSecure();
 
   const getStatusBadgeClass = (status) => {
     switch (status) {
@@ -26,20 +29,29 @@ const ManageApplicationsDataRow = ({ app }) => {
       : "bg-red-100 text-red-800";
   };
 
+  const handleStatusUpdate = async (value) => {
+      try{
+        await axiosSecure.patch(`/applications/status/${app._id}`, {applicationStatus: value});
+        toast.success('Status updated Successfully!');
+        refetch();
+      }
+      catch(err){
+        console.log(err.message);
+        toast.error('Something went wrong');
+      }
+  }
+
   return (
-    <tr
-      key={app._id}
-      className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
-    >
-      <td className="px-4 py-4 text-sm text-gray-900">{app.userName}</td>
-      <td className="px-4 py-4 text-sm text-gray-900">{app.userEmail}</td>
-      <td className="px-4 py-4 text-sm text-gray-900">{app.universityName}</td>
-      <td className="px-4 py-4 text-sm text-gray-900">
+    <tr>
+      <td className="text-sm text-gray-900">{app.userName}</td>
+      <td className="text-sm text-gray-900">{app.userEmail}</td>
+      <td className="text-sm text-gray-900">{app.universityName}</td>
+      <td className="text-sm text-gray-900">
         {app.feedback ? "Feedback given" : "No Feedback yet"}
       </td>
-      <td className="px-4 py-4 ">
+      <td>
         <span
-          className={`inline-flex px-3 py-1 text-xs font-medium rounded-full ${getStatusBadgeClass(
+          className={`px-3 py-1 text-xs font-medium rounded-full ${getStatusBadgeClass(
             app.applicationStatus
           )}`}
         >
@@ -48,14 +60,14 @@ const ManageApplicationsDataRow = ({ app }) => {
       </td>
       <td className="px-4 py-4 ">
         <span
-          className={`inline-flex px-3 py-1 text-xs font-medium rounded-full ${getPaymentBadgeClass(
+          className={`px-3 py-1 text-xs font-medium rounded-full ${getPaymentBadgeClass(
             app.paymentStatus
           )}`}
         >
           {app.paymentStatus}
         </span>
       </td>
-      <td className="px-4 py-4 whitespace-nowrap">
+      <td className="px-4 py-4">
         <div className="flex md:flex-wrap gap-2">
           <button
             onClick={() => setIsDetailsOpen(true)}
@@ -71,12 +83,13 @@ const ManageApplicationsDataRow = ({ app }) => {
           </button>
           <div className="relative">
             <select
+              onChange={(e) => handleStatusUpdate(e.target.value)}
               defaultValue="Status update"
               className="select outline-none min-w-34 max-h-8"
             >
               <option disabled={true}>Status update</option>
-              <option>Processing</option>
-              <option>Completed</option>
+              <option value='processing'>Processing</option>
+              <option value='completed'>Completed</option>
             </select>
           </div>
           <button className="px-3 py-1.5 text-xs font-medium text-white bg-red-600 rounded hover:bg-red-700 transition-colors">
@@ -91,7 +104,8 @@ const ManageApplicationsDataRow = ({ app }) => {
         <FeedbackModal
           setIsFeedbackOpen={setIsFeedbackOpen}
           isFeedbackOpen={isFeedbackOpen}
-          id={app._id}
+          app={app}
+          refetch={refetch}
         />
       </td>
     </tr>

@@ -4,13 +4,14 @@ import { X } from "lucide-react";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { toast } from 'react-hot-toast'
 
-const FeedbackModal = ({ setIsFeedbackOpen, isFeedbackOpen, id }) => {
+const FeedbackModal = ({ setIsFeedbackOpen, isFeedbackOpen, app, refetch }) => {
   const [feedback, setFeedback] = useState("");
   const axiosSecure = useAxiosSecure(); 
   const handleSubmit = async () => {
     try{
-        await axiosSecure.patch(`/applications/feedback/${id}`, {feedback: feedback})
-        toast.success('Feedback given successfully!')
+        await axiosSecure.patch(`/applications/feedback/${app._id}`, {feedback: feedback})
+        toast.success('Feedback given successfully!');
+        refetch();
     }
     catch(err) {
         console.log(err.response.data.message);
@@ -25,14 +26,14 @@ const FeedbackModal = ({ setIsFeedbackOpen, isFeedbackOpen, id }) => {
       open={isFeedbackOpen}
       as="div"
       className="relative z-10 focus:outline-none"
-      onClose={close}
+      onClose={() => setIsFeedbackOpen(false)}
     >
       <div
         className="fixed inset-0 bg-black/30 backdrop-blur-sm"
         aria-hidden="true"
       />
 
-      <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+      <div className="fixed inset-0 z-10 w-full overflow-y-auto">
         <div className="flex min-h-full items-center justify-center p-2 sm:p-4">
           <DialogPanel
             transition
@@ -62,7 +63,7 @@ const FeedbackModal = ({ setIsFeedbackOpen, isFeedbackOpen, id }) => {
               </label>
               <textarea
                 id="feedback"
-                value={feedback}
+                defaultValue={app?.feedback}
                 onChange={(e) => setFeedback(e.target.value)}
                 placeholder="Write your feedback here..."
                 rows={6}
