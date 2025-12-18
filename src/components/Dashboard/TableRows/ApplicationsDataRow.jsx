@@ -2,12 +2,14 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import ApplicationDetailsModal from "../../Modal/ApplicationDetailsModal";
 import { useState } from "react";
-import { toast } from 'react-hot-toast';
+import { toast } from "react-hot-toast";
 import DeleteApplication from "../../Modal/DeleteApplication";
+import AddReviewModal from "../../Modal/AddReviewModal";
 
 const ApplicationsDataRow = ({ app, refetch }) => {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [isReviewOpen, setIsReviewOpen] = useState(false);
   const axiosSecure = useAxiosSecure();
   const { data: scholarship = {} } = useQuery({
     queryKey: ["scholarship", app.scholarshipId],
@@ -41,10 +43,9 @@ const ApplicationsDataRow = ({ app, refetch }) => {
       window.location.href = res.data.url;
     } catch (err) {
       console.log(err.message);
-      toast.error('Something went wrong');
+      toast.error("Something went wrong");
     }
   };
-
 
   return (
     <tr>
@@ -102,6 +103,7 @@ const ApplicationsDataRow = ({ app, refetch }) => {
             Delete
           </button>
           <button
+            onClick={() => setIsReviewOpen(true)}
             className={`text-sm h-7 px-3 py-1 rounded-sm cursor-pointer bg-green-600 text-white ${
               app.applicationStatus !== "completed" && "hidden"
             }`}
@@ -114,7 +116,17 @@ const ApplicationsDataRow = ({ app, refetch }) => {
           setIsDetailsOpen={setIsDetailsOpen}
           isDetailsOpen={isDetailsOpen}
         />
-        <DeleteApplication app={app} setIsDeleteOpen={setIsDeleteOpen} isDeleteOpen={isDeleteOpen} refetch={refetch}/>
+        <DeleteApplication
+          app={app}
+          setIsDeleteOpen={setIsDeleteOpen}
+          isDeleteOpen={isDeleteOpen}
+          refetch={refetch}
+        />
+        <AddReviewModal
+          setIsReviewOpen={setIsReviewOpen}
+          isReviewOpen={isReviewOpen}
+          app={app}
+        />
       </td>
     </tr>
   );
