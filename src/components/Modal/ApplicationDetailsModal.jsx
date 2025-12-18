@@ -137,7 +137,7 @@ const ApplicationDetailsModal = ({ isDetailsOpen, setIsDetailsOpen, app }) => {
 
                   <div>
                     <h3 className="text-xl font-bold mb-3">Feedback</h3>
-                    <p className="border-3 px-4 py-2 text-gray-600 border-gray-500 bg-gray-200 rounded-3xl min-h-32 max-h-32">
+                    <p className="border-3 overflow-y-auto px-4 py-2 text-gray-600 border-gray-500 bg-gray-200 rounded-3xl min-h-32 max-h-32">
                       {app?.feedback || 'No feedback yet!'}
                     </p>
                   </div>

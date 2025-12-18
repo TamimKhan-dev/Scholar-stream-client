@@ -6,7 +6,6 @@ import logo from '../../../assets/images/logo.png'
 import { GrLogout } from 'react-icons/gr'
 import { FcSettings } from 'react-icons/fc'
 import { AiOutlineBars } from 'react-icons/ai'
-import { BsGraphUp } from 'react-icons/bs'
 
 // User Menu
 import MenuItem from './Menu/MenuItem'
@@ -72,12 +71,6 @@ const Sidebar = () => {
           <div className='flex flex-col justify-between flex-1 mt-6'>
             {/*  Menu Items */}
             <nav>
-              {/* Common Menu */}
-              <MenuItem
-                icon={BsGraphUp}
-                label='Statistics'
-                address='/dashboard'
-              />
               {/* Role-Based Menu */}
               <ModeratorMenu />
               <StudentMenu />

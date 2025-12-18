@@ -1,44 +1,36 @@
+import React from "react";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
-import React, { useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
-import { useQuery } from "@tanstack/react-query";
 
-const AddReviewModal = ({ isReviewOpen, setIsReviewOpen, app, filteredReview }) => {
-  const [rating, setRating] = useState(filteredReview?.ratingPoint || 3);
-  const [review, setReview] = useState(filteredReview?.reviewComment);
+const EditReviewModal = ({ isReviewOpen, setIsReviewOpen, review, refetch }) => {
+  const [rating, setRating] = useState(review.ratingPoint);
+  const [updateReview, setUpdateReview] = useState(review.reviewComment);
   const axiosSecure = useAxiosSecure();
-  const { data: user = {} } = useQuery({
-    queryKey: ["user", app.userEmail],
-    queryFn: async () => {
-      const res = await axiosSecure.get(`/users/${app.userEmail}`);
-      return res.data;
-    },
-  });
 
-  const handleSubmit = async () => {
-    if (!review) {
-      toast.error("Review is required");
-      return;
+
+  const handleUpdate = async () => {
+    if (!updateReview) {
+        toast.error('Review is required')
+        return;
     }
-    const reviewInfo = {
-      scholarshipId: app.scholarshipId,
-      universityName: app.universityName,
-      userName: app.userName,
-      userEmail: app.userEmail,
-      userImage: user.imageURL,
-      reviewComment: review,
-      ratingPoint: rating,
-    };
+    const updateInfo = {
+        reviewComment: updateReview,
+        ratingPoint: rating
+    }
     try {
-      await axiosSecure.post("/reviews", reviewInfo);
-      toast.success("Review added successfully!");
-      setIsReviewOpen(false);
-    } catch (err) {
-      console.log(err.message);
-      toast.error("Something went wrong!");
+        await axiosSecure.patch(`/reviews/${review._id}`, updateInfo);
+        toast.success('Review updated successfully!');
+        setIsReviewOpen(false);
+        refetch();
     }
-  };
+    catch(err) {
+        console.log(err.message);
+        toast.error('Something went wrong')
+    }
+  }
+
   return (
     <Dialog
       open={isReviewOpen}
@@ -83,7 +75,7 @@ const AddReviewModal = ({ isReviewOpen, setIsReviewOpen, app, filteredReview }) 
               as="h2"
               className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6"
             >
-              Add a Review
+              Update Review
             </DialogTitle>
 
             {/* Your Rating */}
@@ -118,8 +110,8 @@ const AddReviewModal = ({ isReviewOpen, setIsReviewOpen, app, filteredReview }) 
                 Your Review
               </h3>
               <textarea
-                defaultValue={review}
-                onChange={(e) => setReview(e.target.value)}
+                defaultValue={updateReview}
+                onChange={(e) => setUpdateReview(e.target.value)}
                 placeholder="Write your review here..."
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none text-sm sm:text-base"
                 rows={6}
@@ -130,7 +122,7 @@ const AddReviewModal = ({ isReviewOpen, setIsReviewOpen, app, filteredReview }) 
             {/* Submit Button */}
             <div className="flex justify-end">
               <button
-                onClick={handleSubmit}
+                onClick={handleUpdate}
                 className="px-6 sm:px-8 py-2.5 sm:py-3 bg-primary text-white text-sm sm:text-base font-medium rounded-lg hover:bg-blue-900 cursor-pointer transition-colors shadow-md hover:shadow-lg"
               >
                 Submit Review
@@ -143,4 +135,4 @@ const AddReviewModal = ({ isReviewOpen, setIsReviewOpen, app, filteredReview }) 
   );
 };
 
-export default AddReviewModal;
+export default EditReviewModal;

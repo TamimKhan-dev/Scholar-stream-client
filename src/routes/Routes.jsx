@@ -17,6 +17,7 @@ import AddScholarship from '../pages/Dashboard/Admin/AddScholarship'
 import PaymentSuccess from '../pages/ScholarshipDetails/PaymentSuccess'
 import CancelPayment from '../pages/ScholarshipDetails/PaymentCancelled'
 import ManageApplications from '../pages/Dashboard/Moderator/ManageApplications'
+import MyReviews from '../pages/Dashboard/Student/MyReviews'
 
 export const router = createBrowserRouter([
   {
@@ -108,6 +109,10 @@ export const router = createBrowserRouter([
       {
         path: 'manage-applications',
         element: <ManageApplications />,
+      },
+      {
+        path: 'my-reviews',
+        element: <MyReviews />
       }
     ],
   },

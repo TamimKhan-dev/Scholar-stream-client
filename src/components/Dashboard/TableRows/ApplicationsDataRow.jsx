@@ -5,11 +5,14 @@ import { useState } from "react";
 import { toast } from "react-hot-toast";
 import DeleteApplication from "../../Modal/DeleteApplication";
 import AddReviewModal from "../../Modal/AddReviewModal";
+import useAuth from "../../../hooks/useAuth";
+import LoadingSpinner from "../../Shared/LoadingSpinner";
 
 const ApplicationsDataRow = ({ app, refetch }) => {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [isReviewOpen, setIsReviewOpen] = useState(false);
+  const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const { data: scholarship = {} } = useQuery({
     queryKey: ["scholarship", app.scholarshipId],
@@ -18,6 +21,21 @@ const ApplicationsDataRow = ({ app, refetch }) => {
       return res.data;
     },
   });
+
+  const { data: reviews = {}, isLoading } = useQuery({
+    queryKey: ['reviews'],
+    queryFn: async () => {
+      const res = await axiosSecure(`/reviews/${user.email}`);
+      return res.data;
+    }
+  });
+
+  if (isLoading) {
+    <LoadingSpinner />
+    return;
+  }
+
+  const filteredReview = reviews.find(review => review.scholarshipId === app.scholarshipId);
 
   const getStatusBadgeClass = (status) => {
     switch (status) {
@@ -57,8 +75,8 @@ const ApplicationsDataRow = ({ app, refetch }) => {
           {scholarship.universityCity}, {scholarship.universityCountry}
         </p>
       </td>
-      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-        <p className="text-gray-900 ">Indoor</p>
+      <td className="px-5 py-5 border-b border-gray-200 bg-white text-xs text-wrap">
+        <p className="max-w-[200px] min-w-20 w-fit">{app?.feedback || 'No feeback yet!'}</p>
       </td>
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
         <p className="text-gray-900 ">{scholarship.subjectCategory}</p>
@@ -126,6 +144,7 @@ const ApplicationsDataRow = ({ app, refetch }) => {
           setIsReviewOpen={setIsReviewOpen}
           isReviewOpen={isReviewOpen}
           app={app}
+          filteredReview={filteredReview}
         />
       </td>
     </tr>

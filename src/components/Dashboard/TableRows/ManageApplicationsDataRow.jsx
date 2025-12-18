@@ -49,8 +49,8 @@ const ManageApplicationsDataRow = ({ app, refetch }) => {
       <td className="text-sm text-gray-900">{app.userName}</td>
       <td className="text-sm text-gray-900">{app.userEmail}</td>
       <td className="text-sm text-gray-900">{app.universityName}</td>
-      <td className="text-sm text-gray-900">
-        {app.feedback ? "Feedback given" : "No Feedback yet"}
+      <td className="text-gray-900 text-xs text-wrap">
+        <p className="max-w-[200px] min-w-20 w-fit">{app?.feedback || "No Feedback yet"}</p>
       </td>
       <td>
         <span
