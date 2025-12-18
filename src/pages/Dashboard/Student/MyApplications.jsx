@@ -7,7 +7,7 @@ import ApplicationsDataRow from "../../../components/Dashboard/TableRows/Applica
 const MyApplications = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
-  const { data: applications = [], isLoading } = useQuery({
+  const { data: applications = [], isLoading, refetch } = useQuery({
     queryKey: ["application", user.email],
     queryFn: async () => {
       const res = await axiosSecure(`/applications/${user.email}`);
@@ -73,7 +73,7 @@ const MyApplications = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    { applications.map(app => <ApplicationsDataRow key={app._id} app={app} />)}
+                    { applications.map(app => <ApplicationsDataRow key={app._id} app={app} refetch={refetch}/>)}
                   </tbody>
                 </table>
               </div>

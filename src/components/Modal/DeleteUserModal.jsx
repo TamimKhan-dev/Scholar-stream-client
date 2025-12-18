@@ -1,29 +1,26 @@
-import React from 'react';
-import { AlertTriangle } from 'lucide-react';
-import useAxiosSecure from '../../hooks/useAxiosSecure';
-import toast from 'react-hot-toast';
+import React from "react";
+import { AlertTriangle } from "lucide-react";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import toast from "react-hot-toast";
 
 const DeleteUserModal = ({ deleteOpen, setDeleteOpen, user, refetch }) => {
-    const axiosSecure = useAxiosSecure();
+  const axiosSecure = useAxiosSecure();
 
-    const deleteUser = async () => {
-        try {
-          await axiosSecure.delete(`/users/${user._id}`)
-          toast.success('User deleted successfully!');
-          refetch();
-          setDeleteOpen(false);
-        }
-        catch(err) {
-          console.log(err.message);
-        }
+  const deleteUser = async () => {
+    try {
+      await axiosSecure.delete(`/users/${user._id}`);
+      toast.success("User deleted successfully!");
+      refetch();
+      setDeleteOpen(false);
+    } catch (err) {
+      console.log(err.message);
     }
+  };
 
-    return (
-      <>
-        {deleteOpen && (
+  return (
+    <>
+      {deleteOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
-          
-          
           <div className="relative w-full max-w-md mx-4 sm:mx-auto">
             <div className="bg-white rounded-2xl shadow-2xl p-6 sm:p-8 space-y-5 transform transition-all">
               <div className="flex justify-center">
@@ -33,14 +30,13 @@ const DeleteUserModal = ({ deleteOpen, setDeleteOpen, user, refetch }) => {
               </div>
 
               <h2 className="text-xl sm:text-2xl font-bold text-gray-900 text-center">
-                Delete User 
+                Delete User
               </h2>
-              
+
               <p className="text-sm sm:text-base text-gray-600 text-center font-medium">
                 Are you sure you want to delete this user?
               </p>
-               
-              
+
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2">
                 <button
                   onClick={() => setDeleteOpen(false)}
@@ -59,8 +55,8 @@ const DeleteUserModal = ({ deleteOpen, setDeleteOpen, user, refetch }) => {
           </div>
         </div>
       )}
-      </>
-    )
+    </>
+  );
 };
 
 export default DeleteUserModal;

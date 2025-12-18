@@ -4,30 +4,25 @@ import { RxCrossCircled } from "react-icons/rx";
 import toast from "react-hot-toast";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 
-const ApplicationRejectModal = ({
-  isRejectOpen,
-  setIsRejectOpen,
-  app,
-  refetch,
-}) => {
+const DeleteApplication = ({ isDeleteOpen, setIsDeleteOpen, app, refetch }) => {
   const axiosSecure = useAxiosSecure();
-  const handleReject = async () => {
+  const handleDeleteApplication = async () => {
     try {
-      await axiosSecure.patch(`/applications/reject/${app._id}`);
-      toast.success(`${app.userName}'s application rejected`);
-      setIsRejectOpen(false);
+      await axiosSecure.delete(`/applications/${app._id}`);
+      toast.success("Applications deleted successfully!");
       refetch();
     } catch (err) {
       console.log(err.message);
       toast.error("Something went wrong!");
     }
   };
+
   return (
     <Dialog
-      open={isRejectOpen}
+      open={isDeleteOpen}
       as="div"
       className="relative z-10 focus:outline-none"
-      onClose={() => setIsRejectOpen(false)}
+      onClose={() => setIsDeleteOpen(false)}
     >
       <div
         className="fixed inset-0 bg-black/30 backdrop-blur-sm"
@@ -51,7 +46,7 @@ const ApplicationRejectModal = ({
 
             <div className="space-y-4">
               <h3 className="text-center text-2xl font-bold">
-                Are you sure you want to reject this applicant?
+                Are you sure you want to delete this application?
               </h3>
               <p className="text-gray-500 text-center">
                 This action is permanent cannot be undone
@@ -60,16 +55,16 @@ const ApplicationRejectModal = ({
 
             <div className="mt-4 sm:mt-6 flex gap-3">
               <button
-                onClick={() => setIsRejectOpen(false)}
+                onClick={() => setIsDeleteOpen(false)}
                 className="w-full px-4 sm:px-6 py-2.5 sm:py-3 bg-primary cursor-pointer text-white text-sm sm:text-base font-medium rounded-lg hover:bg-blue-900 transition-colors shadow-md hover:shadow-lg"
               >
                 cancel
               </button>
               <button
-                onClick={handleReject}
+                onClick={handleDeleteApplication}
                 className="w-full px-4 sm:px-6 py-2.5 sm:py-3 bg-red-500 cursor-pointer text-white text-sm sm:text-base font-medium rounded-lg hover:bg-red-700 transition-colors shadow-md hover:shadow-lg"
               >
-                Reject
+                Delete
               </button>
             </div>
           </DialogPanel>
@@ -79,4 +74,4 @@ const ApplicationRejectModal = ({
   );
 };
 
-export default ApplicationRejectModal;
+export default DeleteApplication;

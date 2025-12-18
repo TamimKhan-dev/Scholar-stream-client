@@ -3,9 +3,11 @@ import { useQuery } from "@tanstack/react-query";
 import ApplicationDetailsModal from "../../Modal/ApplicationDetailsModal";
 import { useState } from "react";
 import { toast } from 'react-hot-toast';
+import DeleteApplication from "../../Modal/DeleteApplication";
 
-const ApplicationsDataRow = ({ app }) => {
+const ApplicationsDataRow = ({ app, refetch }) => {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const axiosSecure = useAxiosSecure();
   const { data: scholarship = {} } = useQuery({
     queryKey: ["scholarship", app.scholarshipId],
@@ -43,15 +45,6 @@ const ApplicationsDataRow = ({ app }) => {
     }
   };
 
-  const handleDeleteApplication = async () => {
-    try {
-      await axiosSecure
-    }
-    catch(err) {
-      console.log(err.message);
-      toast.error('Something went wrong!');
-    }
-  }
 
   return (
     <tr>
@@ -101,6 +94,7 @@ const ApplicationsDataRow = ({ app }) => {
             Pay
           </button>
           <button
+            onClick={() => setIsDeleteOpen(true)}
             className={`text-sm h-7 px-3 py-1 rounded-sm cursor-pointer bg-red-600 text-white ${
               app.applicationStatus !== "pending" && "hidden"
             }`}
@@ -120,6 +114,7 @@ const ApplicationsDataRow = ({ app }) => {
           setIsDetailsOpen={setIsDetailsOpen}
           isDetailsOpen={isDetailsOpen}
         />
+        <DeleteApplication app={app} setIsDeleteOpen={setIsDeleteOpen} isDeleteOpen={isDeleteOpen} refetch={refetch}/>
       </td>
     </tr>
   );
