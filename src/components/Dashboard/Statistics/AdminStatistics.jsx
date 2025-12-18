@@ -1,6 +1,7 @@
 import HorizontalBarChart from "../Statistics/HorizontalBarChart";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
+import { useMemo } from "react";
 
 const AdminStatistics = () => {
   const axiosSecure = useAxiosSecure();
@@ -20,6 +21,45 @@ const AdminStatistics = () => {
       return res.data;
     },
   });
+
+  const { data: applications = [] } = useQuery({
+    queryKey: ["applications"],
+    queryFn: async () => {
+      const res = await axiosSecure("applications");
+      return res.data;
+    },
+  });
+
+  const total = useMemo(() => {
+    let sum = 0;
+    for (const key of applications) {
+      if (key.paymentStatus === "paid") {
+        sum += Number(key.applicationFees || 0);
+      }
+    }
+    return sum;
+  }, [applications]);
+
+  const scholarshipsCategory = useMemo(() => {
+    let partial = 0;
+    let selfFund = 0;
+    let fullFund = 0;
+    for (const key of applications) {
+      switch (key.scholarshipCategory) {
+        case "Self-fund":
+          selfFund++;
+          break;
+        case "Full-fund":
+          fullFund++;
+          break;
+        default:
+          partial++;
+          break;
+      }
+    }
+    return { partial, selfFund, fullFund };
+  }, [applications]);
+
 
   return (
     <div>
@@ -43,7 +83,7 @@ const AdminStatistics = () => {
                 Total Fees Collected
               </p>
               <h4 className="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
-                120
+                ${total}
               </h4>
             </div>
           </div>
@@ -63,7 +103,7 @@ const AdminStatistics = () => {
         <div className="mb-4">
           <div className="relative bg-white rounded-xl shadow-md overflow-hidden xl:col-span-2">
             <div className="w-full h-96">
-              <HorizontalBarChart />
+              <HorizontalBarChart scholarshipsCategory={scholarshipsCategory}/>
             </div>
           </div>
         </div>

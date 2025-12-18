@@ -8,30 +8,34 @@ import {
   YAxis,
 } from "recharts";
 
-const HorizontalBarChart = () => {
+const HorizontalBarChart = ({ scholarshipsCategory }) => {
   const data = [
     {
       name: "Full-fund",
-      count: 1400,
+      count: scholarshipsCategory.fullFund,
     },
     {
       name: "Partial",
-      count: 1506,
+      count: scholarshipsCategory.partial,
     },
     {
       name: "Self-fund",
-      count: 989,
-    }
+      count: scholarshipsCategory.selfFund,
+    },
   ];
   return (
     <div className="w-full h-96 pb-10 border-b-2 border-gray-200">
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart layout="vertical" data={data} margin={{
-        top: 20,
-        right: 0,
-        bottom: 0,
-        left: 45,
-      }}>
+        <BarChart
+          layout="vertical"
+          data={data}
+          margin={{
+            top: 20,
+            right: 0,
+            bottom: 0,
+            left: 45,
+          }}
+        >
           <XAxis type="number" />
           <YAxis dataKey="name" type="category" reversed />
           <Tooltip />

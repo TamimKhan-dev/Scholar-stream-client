@@ -1,9 +1,11 @@
 import useAuth from '../../../hooks/useAuth'
 import coverImg from '../../../assets/images/field_image.jpg'
 import { GoMail } from "react-icons/go";
+import useRole from '../../../hooks/useRole';
 
 const Profile = () => {
-  const { user } = useAuth()
+  const { user } = useAuth();
+  const { role } = useRole();
 
   return (
     <div className='flex justify-center items-center h-screen'>
@@ -26,11 +28,11 @@ const Profile = () => {
             <p className='mt-2 text-sm font-medium text-gray-500 '>
             User Id: {user?.uid}
           </p>
-          <p className='text-xl md:text-3xl font-bold'>{user?.displayName}</p>
+          <p className='text-xl md:text-3xl font-bold'>Name: {user?.displayName}</p>
           <p className='flex gap-3 items-center font-semibold'><GoMail /> {user?.email}</p>
           </div>
            <p className='p-2 px-4 w-fit self-start mt-4 text-xs text-white bg-primary rounded-full'>
-            Student
+            {role}
           </p>
         </div>
       </div>

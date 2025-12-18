@@ -12,10 +12,12 @@ import MenuItem from './Menu/MenuItem'
 import AdminMenu from './Menu/AdminMenu'
 import StudentMenu from './Menu/StudentMenu'
 import ModeratorMenu from './Menu/ModeratorMenu'
+import useRole from '../../../hooks/useRole'
 
 const Sidebar = () => {
   const { logOut } = useAuth()
-  const [isActive, setActive] = useState(false)
+  const [isActive, setActive] = useState(false);
+  const { role } = useRole();
 
   // Sidebar Responsive Handler
   const handleToggle = () => {
@@ -72,9 +74,9 @@ const Sidebar = () => {
             {/*  Menu Items */}
             <nav>
               {/* Role-Based Menu */}
-              <ModeratorMenu />
-              <StudentMenu />
-              <AdminMenu />
+              { role === 'moderator' && <ModeratorMenu />}
+              { role === 'student' && <StudentMenu />}
+              { role === 'admin' && <AdminMenu />}
             </nav>
           </div>
 
