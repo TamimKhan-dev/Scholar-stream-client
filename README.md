@@ -2,7 +2,7 @@
 **Purpose:** ScholarStream is a modern and user-friendly scholarship management platform designed to help students easily discover and apply for educational opportunities that match their goals. The platform aims to simplify the often complex and time-consuming process of finding scholarships by providing a centralized space where students can explore detailed scholarship information, view eligibility criteria, deadlines, fees, and coverage details—all in one place.
 
 ***
-**Live Link**: https://cool-sopapillas-ca1f0f.netlify.app/
+**Live Link**: https://assignment11-starter.web.app
 
 ## Here are some key features of this website:
 
@@ -28,7 +28,11 @@
 - react-hot-toast
 - react-icons
 - react-tooltip
-- sweetalert2
 - swiper  
+- framer-motion
+- date-fns
+- react-spinners
+- recharts
+- axios
 
 **Other:** Vite

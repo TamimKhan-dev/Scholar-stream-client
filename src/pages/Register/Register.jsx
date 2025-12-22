@@ -18,6 +18,7 @@ const Register = () => {
   const {
     register,
     handleSubmit,
+    loginUser,
     formState: { errors },
   } = useForm();
 
@@ -27,22 +28,31 @@ const Register = () => {
     try {
       const imageURL = await imageUpload(image[0]);
 
-      await createUser(email, password);
-      await updateUserProfile(name, imageURL);
+      const userInfo = { name, email, imageURL };
+      try {
+        await axiosSecure.post("/users", userInfo);
+        await createUser(email, password);
+        await updateUserProfile(name, imageURL);
+        navigate(from, { replace: true });
+        toast.success("Signup Successful");
+      } catch (backendErr) {
+        if (backendErr.response?.status === 409) {
+          toast("You already have an account, logging in...");
 
-      const userInfo = {
-        name,
-        email,
-        imageURL,
-      };
-
-      await axiosSecure.post("/users", userInfo);
-
-      navigate(from, { replace: true });
-      toast.success("Signup Successful");
+          try {
+            await loginUser(email, password);
+            navigate(from, { replace: true });
+            toast.success("Logged in successfully");
+          } catch (err) {
+            toast.error(err.message);
+          }
+        } else {
+          throw backendErr;
+        }
+      }
     } catch (err) {
       console.log(err);
-      toast.error(err?.message);
+      toast.error(err?.message || "Signup failed");
     }
   };
 
@@ -62,9 +72,9 @@ const Register = () => {
         toast.success("Signup Successful");
       } catch (err) {
         if (err.response?.status === 409) {
-          toast.error('User already exists');
+          toast.error("User already exists");
         } else {
-          throw err; 
+          throw err;
         }
       }
 
