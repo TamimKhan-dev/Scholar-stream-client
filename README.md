@@ -1,16 +1,34 @@
-# React + Vite
+## ScholarStream
+**Purpose:** ScholarStream is a modern and user-friendly scholarship management platform designed to help students easily discover and apply for educational opportunities that match their goals. The platform aims to simplify the often complex and time-consuming process of finding scholarships by providing a centralized space where students can explore detailed scholarship information, view eligibility criteria, deadlines, fees, and coverage details—all in one place.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+***
+**Live Link**: https://cool-sopapillas-ca1f0f.netlify.app/
 
-Currently, two official plugins are available:
+## Here are some key features of this website:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+**1. Comprehensive Scholarship Pages:** Each scholarship has a detailed page showing description, university details, application fees, deadline, degree, and coverage details.
 
-## React Compiler
+**2. Student Reviews & Feedback:** Students can leave ratings and reviews for scholarships they’ve applied to, and moderators can provide feedback on applications.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+**3. Role-Based Dashboards:** Separate dashboards for Students, Moderators, and Admins with actions specific to their role, making management and tracking easy.
 
-## Expanding the ESLint configuration
+**4. Smart Search & Filters:** Quickly find scholarships by name, university, degree or category.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+**5. Secure Payment Integration:** Students can pay application fees safely through Stripe, with clear success and failure handling.
+
+**6. Responsive & User-Friendly Design:** Fully optimized for desktop, tablet, and mobile, with a clean, modern layout that encourages exploration.
+
+## Technologies used in this website
+
+**User interface:** React.js (Tailwindcss, DaisyUI).  
+**User Authentication:** Firebase.  
+**Routing:** React-router.  
+**npm packages:**  
+- lucide-react
+- react-hot-toast
+- react-icons
+- react-tooltip
+- sweetalert2
+- swiper  
+
+**Other:** Vite

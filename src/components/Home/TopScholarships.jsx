@@ -13,15 +13,16 @@ const TopScholarships = () => {
   const { data, isLoading } = useQuery({
     queryKey: ["scholarships"],
     queryFn: async () => {
-      const res = await axiosSecure.get("/scholarships");
+      const res = await axiosSecure.get("/scholarships?sortValue=Latest&limit=6&skip=0");
       return res.data;
     },
   });
-  const scholarships = data
-    ? data
-        .sort((a, b) => new Date(b.postDate) - new Date(a.postDate))
-        .slice(0, 6)
-    : [];
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
+  const scholarships = data?.data || [];
 
   return (
     <div className="mb-20 relative">

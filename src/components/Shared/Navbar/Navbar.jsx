@@ -96,7 +96,7 @@ const Navbar = () => {
                       Home
                     </Link>
                     <Link
-                      to="/"
+                      to="/all-scholarships"
                       className="block md:hidden px-4 py-3 hover:bg-neutral-100 transition font-semibold"
                     >
                       All Scholarships

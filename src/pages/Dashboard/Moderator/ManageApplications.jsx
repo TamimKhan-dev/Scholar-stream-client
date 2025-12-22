@@ -1,10 +1,11 @@
 import ManageApplicationsDataRow from "../../../components/Dashboard/TableRows/ManageApplicationsDataRow";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import LoadingSpinner from "../../../components/Shared/LoadingSpinner";
 
 const ManageApplications = () => {
   const axiosSecure = useAxiosSecure();
-  const { data: applications = [], refetch } = useQuery({
+  const { data: applications = [], refetch, isLoading } = useQuery({
     queryKey: ["applications"],
     queryFn: async () => {
       const res = await axiosSecure("/applications");
@@ -42,7 +43,7 @@ const ManageApplications = () => {
         </thead>
         <tbody>
           {applications.map((app) => (
-            <ManageApplicationsDataRow key={app._id} app={app} refetch={refetch} />
+            isLoading ? <LoadingSpinner /> : <ManageApplicationsDataRow key={app._id} app={app} refetch={refetch} />
           ))}
         </tbody>
       </table>

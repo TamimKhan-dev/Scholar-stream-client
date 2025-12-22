@@ -14,7 +14,7 @@ const Register = () => {
   const location = useLocation();
   const axiosSecure = useAxiosSecure();
 
-  const from = location.state || "/";
+  const from = location.state?.from?.pathName || "/";
   const {
     register,
     handleSubmit,

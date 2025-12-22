@@ -10,7 +10,7 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const from = location.state || "/";
+  const from = location.state?.from?.pathName || "/";
 
   if (loading) return <LoadingSpinner />;
   if (user) return <Navigate to={from} replace={true} />;

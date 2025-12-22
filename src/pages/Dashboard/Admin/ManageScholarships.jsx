@@ -4,13 +4,15 @@ import useAxiosSecure from '../../../hooks/useAxiosSecure';
 
 const ManageScholarships = () => {
   const axiosSecure = useAxiosSecure();
-  const { data: scholarships = [], refetch } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: ['scholarships'],
     queryFn: async () => {
       const res = await axiosSecure.get('/scholarships');
       return res.data;
     }
   });
+
+  const scholarships = data?.data || [];
 
   return (
     <>

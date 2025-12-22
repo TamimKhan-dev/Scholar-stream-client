@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion'
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Mousewheel, Keyboard } from "swiper/modules";
 import "swiper/css";
@@ -8,6 +8,7 @@ import "swiper/css/pagination";
 import banner1 from "../../assets/images/banner2.jpg";
 import banner2 from "../../assets/images/banner1.jpg";
 import banner3 from "../../assets/images/banner3.jpg";
+import { useNavigate } from 'react-router';
 
 const bannerImgs = [
   {
@@ -63,6 +64,11 @@ const buttonVariants = {
 
 const Banner = () => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate("/all-scholarships#search");
+  };
 
   return (
     <div className="md:min-h-[60vh] mb-18 rounded-lg bg-gray-400 mt-5 overflow-hidden">
@@ -113,6 +119,7 @@ const Banner = () => {
                   {description}
                 </motion.p>
                 <motion.button
+                  onClick={handleClick}
                   variants={buttonVariants}
                   className="bg-primary p-1 text-sm md:text-lg cursor-pointer sm:py-1.5 sm:px-3 rounded-3xl"
                 >

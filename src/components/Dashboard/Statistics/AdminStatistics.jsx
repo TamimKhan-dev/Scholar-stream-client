@@ -14,13 +14,15 @@ const AdminStatistics = () => {
     },
   });
 
-  const { data: scholarships = [] } = useQuery({
+  const { data } = useQuery({
     queryKey: ["scholarships"],
     queryFn: async () => {
       const res = await axiosSecure.get("/scholarships");
       return res.data;
     },
   });
+
+  const scholarships = data?.data || [];
 
   const { data: applications = [] } = useQuery({
     queryKey: ["applications"],

@@ -46,7 +46,7 @@ export const router = createBrowserRouter([
         Component: AllScholarships,
       },
       {
-        path: "scholarship/payment-success",
+        path: "scholarship/payment-success/:scholarshipId",
         element: <PaymentSuccess />,
       },
       {

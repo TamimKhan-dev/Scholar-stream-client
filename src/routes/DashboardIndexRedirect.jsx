@@ -7,9 +7,9 @@ const DashboardIndexRedirect = () => {
 
   if (roleLoading) return <LoadingSpinner />;
 
-  if (role === "admin") return <Navigate to="/dashboard/statistics" replace />; // admin default
+  if (role === "admin") return <Navigate to="/dashboard/statistics" replace />; 
   if (role === "moderator") return <Navigate to="/dashboard/manage-applications" replace />;
-  return <Navigate to="/dashboard/my-applications" replace />; // student default
+  return <Navigate to="/dashboard/my-applications" replace />;
 };
 
 export default DashboardIndexRedirect;

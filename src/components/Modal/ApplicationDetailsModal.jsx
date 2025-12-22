@@ -2,13 +2,15 @@ import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
+import { format } from "date-fns";
+import LoadingSpinner from "../Shared/LoadingSpinner";
 
 const ApplicationDetailsModal = ({ isDetailsOpen, setIsDetailsOpen, app }) => {
   function close() {
     setIsDetailsOpen(false);
   }
   const axiosSecure = useAxiosSecure();
-  const { data: scholarship = {} } = useQuery({
+  const { data: scholarship = {}, isLoading } = useQuery({
     queryKey: ["scholarship", app.scholarshipId],
     queryFn: async () => {
       const res = await axiosSecure(`/scholarships/${app.scholarshipId}`);
@@ -37,6 +39,10 @@ const ApplicationDetailsModal = ({ isDetailsOpen, setIsDetailsOpen, app }) => {
         return "bg-gray-100 text-gray-800";
     }
   };
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+  const date = format(new Date(scholarship.postDate), "dd/MM/yyyy");
 
   return (
     <>
@@ -125,20 +131,34 @@ const ApplicationDetailsModal = ({ isDetailsOpen, setIsDetailsOpen, app }) => {
                       <span className="font-semibold mr-2">
                         Application Status:
                       </span>
-                      <span className={`${getStatusBadgeClass(app.applicationStatus)} px-3 py-1 rounded-full`}>{app.applicationStatus}</span>
+                      <span
+                        className={`${getStatusBadgeClass(
+                          app.applicationStatus
+                        )} px-3 py-1 rounded-full`}
+                      >
+                        {app.applicationStatus}
+                      </span>
                     </p>
                     <p>
                       <span className="font-semibold mr-2">
                         Payment Status:
                       </span>
-                      <span className={`${app.paymentStatus === 'paid' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'} px-3 py-1 rounded-full`}>{app.paymentStatus}</span>
+                      <span
+                        className={`${
+                          app.paymentStatus === "paid"
+                            ? "bg-green-100 text-green-800"
+                            : "bg-gray-100 text-gray-800"
+                        } px-3 py-1 rounded-full`}
+                      >
+                        {app.paymentStatus}
+                      </span>
                     </p>
                   </div>
 
                   <div>
                     <h3 className="text-xl font-bold mb-3">Feedback</h3>
                     <p className="border-3 overflow-y-auto px-4 py-2 text-gray-600 border-gray-500 bg-gray-200 rounded-3xl min-h-32 max-h-32">
-                      {app?.feedback || 'No feedback yet!'}
+                      {app?.feedback || "No feedback yet!"}
                     </p>
                   </div>
                 </div>
@@ -244,7 +264,7 @@ const ApplicationDetailsModal = ({ isDetailsOpen, setIsDetailsOpen, app }) => {
                         </p>
                         <p>
                           <span className="font-semibold">Post Date:</span>{" "}
-                          {scholarship.postDate}
+                          {date}
                         </p>
                       </div>
                     </div>
