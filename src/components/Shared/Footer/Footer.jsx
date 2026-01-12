@@ -60,10 +60,9 @@ const Footer = () => {
           <div className="mt-7">
             <h3 className="text-xl font-bold">Social Links</h3>
             <div className="flex gap-2 mt-2">
-              <FaSquareXTwitter style={{ fontSize: "30px" }} />
-              <FaLinkedin style={{ fontSize: "30px" }} />
-              <FaFacebookSquare style={{ fontSize: "30px" }} />
-              <FaYoutubeSquare  style={{ fontSize: "30px" }}/>
+              <a href="https://x.com/Tamimkhan4627" target="_blank"><FaSquareXTwitter style={{ fontSize: "30px" }} /></a>
+              <a href="https://www.linkedin.com/in/tamimkhan-dev" target="_blank"><FaLinkedin style={{ fontSize: "30px" }} /></a>
+              <a href="https://web.facebook.com/md.tamim.khan.829836" target="_blank"><FaFacebookSquare style={{ fontSize: "30px" }} /></a>
             </div>
           </div>
         </div>

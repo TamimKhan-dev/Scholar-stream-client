@@ -3,12 +3,14 @@ import toast from "react-hot-toast";
 import LoadingSpinner from "../../components/Shared/LoadingSpinner";
 import useAuth from "../../hooks/useAuth";
 import { FcGoogle } from "react-icons/fc";
-import { TbFidgetSpinner } from "react-icons/tb";
+import { useState } from "react";
 
 const Login = () => {
   const { signIn, signInWithGoogle, loading, user, setLoading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const from = location.state?.from?.pathName || "/";
 
@@ -47,8 +49,17 @@ const Login = () => {
       toast.error(err?.message);
     }
   };
+
+  const handleAdminLogin = () => {
+    setEmail('admin@gmail.com');
+    setPassword('Admin!');
+  }
+
   return (
     <div className="flex justify-center items-center min-h-screen bg-white">
+      <div className="absolute top-6 left-5 bg-gray-100 rounded-xl border-2 border-gray-400 px-2 py-3">
+        <button onClick={handleAdminLogin} className="btn bg-primary text-white">Login as Admin</button>
+      </div>
       <div className="flex flex-col max-w-md p-6 rounded-md sm:p-10 bg-gray-100 text-gray-900">
         <div className="mb-8 text-center">
           <h1 className="my-3 text-4xl font-bold">Log In</h1>
@@ -73,6 +84,8 @@ const Login = () => {
                 id="email"
                 required
                 placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-primary bg-gray-200 text-gray-900"
                 data-temp-mail-org="0"
               />
@@ -89,6 +102,8 @@ const Login = () => {
                 autoComplete="current-password"
                 id="password"
                 required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 placeholder="Password"
                 className="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-primary bg-gray-200 text-gray-900"
               />

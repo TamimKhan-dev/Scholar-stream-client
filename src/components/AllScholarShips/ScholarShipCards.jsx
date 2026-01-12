@@ -4,8 +4,8 @@ import { Link } from 'react-router';
 
 const ScholarShipCards = ({ scholarship }) => {
     return (
-        <div className='border rounded-xl border-gray-300 p-3 space-y-3'>
-            <img src={scholarship.universityImage} alt="" className='rounded-lg w-full max-h-40'/>
+        <div className='border rounded-xl border-gray-300 p-3 space-y-3 flex flex-col justify-between'>
+            <img src={scholarship.universityImage} alt="" className='rounded-lg w-full max-h-40 min-h-40'/>
             <h3 className='text-xl md:text-2xl font-bold'>{scholarship.universityName}</h3>
             <p className='p-1 px-2 text-sm bg-green-200 text-green-600 rounded-3xl w-fit'>{scholarship.scholarshipCategory}</p>
             <div className='flex items-center gap-1 font-semibold'>

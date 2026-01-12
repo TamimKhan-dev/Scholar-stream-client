@@ -93,7 +93,7 @@ const ScholarshipDetails = () => {
             className="w-full h-full object-start"
           />
           <div className="absolute inset-0 bg-linear-to-t from-black to-transparent rounded-xl"></div>
-          <div className="absolute z-50 left-1/2 -translate-x-[50%] bottom-20 space-y-8">
+          <div className="absolute z-40 left-1/2 -translate-x-[50%] bottom-20 space-y-8">
             <h3 className="text-2xl md:text-4xl text-center font-bold text-white">
               {scholarship.scholarshipName}
             </h3>

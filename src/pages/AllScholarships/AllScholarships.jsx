@@ -3,17 +3,14 @@ import Container from "../../components/Shared/Container";
 import ScholarShipCards from "../../components/AllScholarShips/ScholarShipCards";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
-import LoadingSpinner from "../../components/Shared/LoadingSpinner";
 import { useState } from "react";
 import { useEffect } from "react";
-import useAuth from "../../hooks/useAuth";
 import { useRef } from "react";
 
 const AllScholarships = () => {
-  const scholarships_per_page = 6;
+  const scholarships_per_page = 8;
   const axiosSecure = useAxiosSecure();
   const searchInputRef = useRef(null);
-  const { loading } = useAuth();
   const [searchInputValue, setSearchInputValue] = useState("");
   const [searchValue, setSearchValue] = useState(searchInputValue);
   const [filterValue, setFilterValue] = useState("");
@@ -53,7 +50,7 @@ const AllScholarships = () => {
     if (window.location.hash === "#search") {
       searchInputRef.current?.focus();
     }
-  }, [])
+  }, []);
 
   const handleFilter = (e) => {
     setCurrentPage(1);
@@ -69,10 +66,6 @@ const AllScholarships = () => {
     setCurrentPage(1);
     setSortValue(e.target.value);
   };
-
-  if (loading) {
-    return <LoadingSpinner />;
-  }
 
   return (
     <div>
@@ -151,9 +144,58 @@ const AllScholarships = () => {
 
         <div className="mb-5">
           {isLoading ? (
-            <LoadingSpinner />
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 justify-items-center">
+              <div className="flex w-52 flex-col gap-4">
+                <div className="skeleton h-32 w-full"></div>
+                <div className="skeleton h-4 w-28"></div>
+                <div className="skeleton h-4 w-full"></div>
+                <div className="skeleton h-4 w-full"></div>
+              </div>
+              <div className="flex w-52 flex-col gap-4">
+                <div className="skeleton h-32 w-full"></div>
+                <div className="skeleton h-4 w-28"></div>
+                <div className="skeleton h-4 w-full"></div>
+                <div className="skeleton h-4 w-full"></div>
+              </div>
+              <div className="flex w-52 flex-col gap-4">
+                <div className="skeleton h-32 w-full"></div>
+                <div className="skeleton h-4 w-28"></div>
+                <div className="skeleton h-4 w-full"></div>
+                <div className="skeleton h-4 w-full"></div>
+              </div>
+              <div className="flex w-52 flex-col gap-4">
+                <div className="skeleton h-32 w-full"></div>
+                <div className="skeleton h-4 w-28"></div>
+                <div className="skeleton h-4 w-full"></div>
+                <div className="skeleton h-4 w-full"></div>
+              </div>
+              <div className="flex w-52 flex-col gap-4">
+                <div className="skeleton h-32 w-full"></div>
+                <div className="skeleton h-4 w-28"></div>
+                <div className="skeleton h-4 w-full"></div>
+                <div className="skeleton h-4 w-full"></div>
+              </div>
+              <div className="flex w-52 flex-col gap-4">
+                <div className="skeleton h-32 w-full"></div>
+                <div className="skeleton h-4 w-28"></div>
+                <div className="skeleton h-4 w-full"></div>
+                <div className="skeleton h-4 w-full"></div>
+              </div>
+              <div className="flex w-52 flex-col gap-4">
+                <div className="skeleton h-32 w-full"></div>
+                <div className="skeleton h-4 w-28"></div>
+                <div className="skeleton h-4 w-full"></div>
+                <div className="skeleton h-4 w-full"></div>
+              </div>
+              <div className="flex w-52 flex-col gap-4">
+                <div className="skeleton h-32 w-full"></div>
+                <div className="skeleton h-4 w-28"></div>
+                <div className="skeleton h-4 w-full"></div>
+                <div className="skeleton h-4 w-full"></div>
+              </div>
+            </div>
           ) : (
-            <div className="mb-20 grid sm:grid-cols-2 lg:grid-cols-3 gap-9">
+            <div className="mb-20 grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 lg:gap-9 xl:gap-3">
               {scholarships.map((scholarship) => (
                 <ScholarShipCards
                   key={scholarship._id}

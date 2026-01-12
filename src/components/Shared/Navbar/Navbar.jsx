@@ -10,10 +10,10 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="w-full bg-white shadow-sm">
+    <div className="w-full sticky top-0 z-50 bg-white shadow-sm">
       <div className="py-3">
         <Container>
-          <div className="flex flex-row  items-center justify-between gap-3 md:gap-0">
+          <div className="flex flex-row items-center justify-between gap-3 md:gap-0">
             {/* Logo */}
             <Link to="/" className="flex gap-2 items-center">
               <img src={logo} alt="logo" width="60" height="60" />
